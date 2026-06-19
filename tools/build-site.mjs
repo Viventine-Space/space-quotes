@@ -22,6 +22,17 @@ const SAME_AS = []; // add social profile URLs here when they exist (X, LinkedIn
 const quotes = JSON.parse(readFileSync(join(ROOT, "data", "quotes.json"), "utf8"));
 const quoteById = Object.fromEntries(quotes.map((q) => [q.id, q]));
 
+const DOCKET_LABELS = Object.fromEntries(
+  (JSON.parse(readFileSync(join(ROOT, "data", "space-dockets.json"), "utf8")).dockets || []).map((d) => [d.docket, d.label])
+);
+const TAG_LABELS = {
+  fcc: "FCC", itu: "ITU", faa: "FAA", ngso: "NGSO", gso: "GSO", "ka-band": "Ka-band",
+  "direct-to-cell": "Direct-to-cell", "ast-spacemobile": "AST SpaceMobile",
+  "supplemental-coverage-from-space": "Supplemental Coverage from Space",
+};
+const humanizeTag = (t) => TAG_LABELS[t] || t.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+const docketLabel = (d) => DOCKET_LABELS[d] || `FCC Docket ${d}`;
+
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const escAttr = (s) => esc(s).replace(/'/g, "&#39;");
 const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
@@ -151,8 +162,15 @@ const ICONS = {
 };
 
 // ---------- tidbit page ----------
-function page(fm, bodyHtml, quote, ogImage, desc, mtime, related) {
+function page(fm, bodyHtml, quote, ogImage, desc, mtime, related, docket) {
   const url = `${SITE}/tidbits/${fm.slug}/`;
+  const tags = Array.isArray(fm.tags) ? fm.tags : fm.tags ? [fm.tags] : [];
+  const filedHtml =
+    docket || tags.length
+      ? `<div class="filed"><span>Filed under</span>${docket ? `<a class="chiptag" href="/dockets/${docket}/">Docket ${esc(docket)}</a>` : ""}${tags
+          .map((t) => `<a class="chiptag" href="/topics/${t}/">${esc(humanizeTag(t))}</a>`)
+          .join("")}</div>`
+      : "";
   const isoPub = `${fm.date}T09:00:00Z`;
   const article = {
     "@context": "https://schema.org", "@type": "Article",
@@ -225,7 +243,11 @@ h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5.2vw,44px);line-he
 .tq p{font-style:italic;font-size:23px;margin:0 0 8px;color:#dce4ff}
 .tq cite{font-style:normal;color:var(--muted);font-size:15px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 .body em{font-style:italic;color:var(--muted)}
-.related{margin-top:54px;padding-top:26px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+.filed{margin-top:38px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
+.filed span{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-right:2px}
+.chiptag{display:inline-block;padding:5px 12px;border-radius:999px;border:1px solid rgba(120,150,255,.28);background:rgba(255,255,255,.03);color:var(--muted);font-size:13px;text-decoration:none}
+.chiptag:hover{border-color:var(--accent);color:#fff}
+.related{margin-top:48px;padding-top:26px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 .related h2{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:0 0 14px}
 .related ul{list-style:none;padding:0;margin:0}
 .related a{display:block;padding:12px 0;text-decoration:none;border-top:1px solid #161a2e}
@@ -245,6 +267,7 @@ footer{margin-top:48px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-s
 <div class="body">
 ${bodyHtml}
 </div>
+${filedHtml}
 </article>
 ${relHtml}
 <footer>A <a href="/tidbits/">Space Quotes tidbit</a> — real space-regulatory filings, paired with the words that saw them coming. <a href="/">spacequotes.org</a></footer>
@@ -254,24 +277,26 @@ ${relHtml}
 `;
 }
 
-// ---------- feed page ----------
-function feedPage(items) {
-  const desc = "Crafty, sourced tidbits from real FCC, ITU and FAA space filings, each paired with a space quote. From spacequotes.org.";
-  const itemList = { "@context": "https://schema.org", "@type": "ItemList", itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/tidbits/${it.fm.slug}/`, name: it.fm.title })) };
-  const rows = items.map((it) => `<li><a href="/tidbits/${it.fm.slug}/"><span class="t">${esc(it.fm.title)}</span><span class="m">${esc(it.fm.source_label || "")} · ${esc(it.fm.date)}</span></a></li>`).join("\n");
+// ---------- shared listing renderer (feed + hubs + hub indexes) ----------
+function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, extraLd = [] }) {
+  const crumbNav = crumbs.map((c, i) => (i === 0 ? `<a href="${c.url}">${esc(c.name)}</a>` : ` &nbsp;/&nbsp; ${c.url ? `<a href="${c.url}">${esc(c.name)}</a>` : esc(c.name)}`)).join("");
+  const breadcrumb = {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, item: c.url.startsWith("http") ? c.url : `${SITE}${c.url}` })),
+  };
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tidbits — sourced space-filing dispatches | Space Quotes</title>
+<title>${esc(titleTag)}</title>
 <meta name="description" content="${escAttr(desc)}">
-<link rel="canonical" href="${SITE}/tidbits/">
+<link rel="canonical" href="${canonical}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:site_name" content="Space Quotes">
 <meta property="og:type" content="website">
-<meta property="og:url" content="${SITE}/tidbits/">
-<meta property="og:title" content="Tidbits — Space Quotes">
+<meta property="og:url" content="${canonical}">
+<meta property="og:title" content="${escAttr(h1)} — Space Quotes">
 <meta property="og:description" content="${escAttr(desc)}">
 <meta property="og:image" content="${SITE}/assets/og/home.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -279,7 +304,7 @@ function feedPage(items) {
 <meta name="theme-color" content="#0a0a0f">
 <link rel="alternate" type="application/rss+xml" title="Space Quotes tidbits" href="${SITE}/feed.xml">
 ${FONTS}
-${ld(itemList)}
+${[breadcrumb, ...extraLd].map(ld).join("\n")}
 <style>
 :root{color-scheme:dark;--bg:#0a0a0f;--accent:#6f9bff;--text:#eef1fa;--muted:#aebbe6;--dim:#9aa6cf}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;line-height:1.6;overflow-x:hidden}
@@ -288,23 +313,24 @@ ${STARFIELD}
 a{color:#9fbcff;text-decoration:none}
 nav{font-size:14px;color:var(--muted);margin-bottom:26px}
 h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5vw,42px);margin:0 0 10px;font-weight:800;letter-spacing:-.5px}
-.lede{color:var(--muted);margin:0 0 34px;font-size:18px;max-width:60ch}
+.lede{color:var(--muted);margin:0 0 34px;font-size:18px;max-width:62ch}
 ul{list-style:none;padding:0;margin:0}
 li a{display:block;padding:20px 0;border-top:1px solid #1c2138}
 li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.t{display:block;font-size:21px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.3}
+.t{display:block;font-size:21px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.3;font-family:'Fraunces',Georgia,serif}
 .m{display:block;font-size:12.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.3px}
 li a:hover .t{color:var(--accent)}
+.count{color:var(--dim);font-weight:400;font-size:.6em;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 </style>
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
 <div class="wrap">
-<nav><a href="/">← Space Quotes</a></nav>
-<h1>Tidbits</h1>
-<p class="lede">${esc(desc)}</p>
+<nav>${crumbNav}</nav>
+<h1>${esc(h1)}</h1>
+<p class="lede">${esc(lede)}</p>
 <ul>
-${rows}
+${rowsHtml}
 </ul>
 </div>
 </body>
@@ -312,8 +338,65 @@ ${rows}
 `;
 }
 
+const tidbitRow = (it) =>
+  `<li><a href="/tidbits/${it.fm.slug}/"><span class="t">${esc(it.fm.title)}</span><span class="m">${esc(it.fm.source_label || "")} · ${esc(it.fm.date)}</span></a></li>`;
+const itemListLd = (its) => ({ "@context": "https://schema.org", "@type": "ItemList", itemListElement: its.map((it, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/tidbits/${it.fm.slug}/`, name: it.fm.title })) });
+
+function feedPage(items) {
+  const desc = "Crafty, sourced tidbits from real FCC, ITU and FAA space filings, each paired with a space quote. From spacequotes.org.";
+  return listingPage({
+    titleTag: "Tidbits — sourced space-filing dispatches | Space Quotes",
+    desc, canonical: `${SITE}/tidbits/`, h1: "Tidbits", lede: desc,
+    crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Tidbits", url: "/tidbits/" }],
+    rowsHtml: items.map(tidbitRow).join("\n"),
+    extraLd: [itemListLd(items)],
+  });
+}
+
+function topicHub(slug, label, its) {
+  const desc = `Space Quotes tidbits on ${label} — sourced from real FCC, ITU and FAA filings, each paired with a space quote.`;
+  return listingPage({
+    titleTag: `${label} — space-policy tidbits | Space Quotes`,
+    desc, canonical: `${SITE}/topics/${slug}/`, h1: label,
+    lede: `Verified, primary-sourced tidbits tagged “${label}.”`,
+    crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Topics", url: "/topics/" }, { name: label, url: `/topics/${slug}/` }],
+    rowsHtml: its.map(tidbitRow).join("\n"),
+    extraLd: [itemListLd(its)],
+  });
+}
+
+function docketHub(docket, its) {
+  const label = docketLabel(docket);
+  const desc = `Every Space Quotes tidbit from FCC docket ${docket} — ${label}. Sourced from primary filings.`;
+  return listingPage({
+    titleTag: `FCC Docket ${docket} — ${label} | Space Quotes`,
+    desc, canonical: `${SITE}/dockets/${docket}/`, h1: `Docket ${docket}`,
+    lede: `${label}. Verified tidbits drawn from filings in this FCC proceeding.`,
+    crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Dockets", url: "/dockets/" }, { name: `Docket ${docket}`, url: `/dockets/${docket}/` }],
+    rowsHtml: its.map(tidbitRow).join("\n"),
+    extraLd: [itemListLd(its)],
+  });
+}
+
+function hubIndex(kind, entries) {
+  const isTopic = kind === "topics";
+  const h1 = isTopic ? "Topics" : "Dockets";
+  const desc = isTopic
+    ? "Browse Space Quotes tidbits by topic — orbital debris, spectrum, direct-to-cell and more."
+    : "Browse Space Quotes tidbits by FCC docket — every proceeding we've covered.";
+  const rows = entries
+    .map((e) => `<li><a href="/${kind}/${e.slug}/"><span class="t">${esc(e.label)} <span class="count">${e.n} tidbit${e.n > 1 ? "s" : ""}</span></span><span class="m">${esc(e.sub || "")}</span></a></li>`)
+    .join("\n");
+  return listingPage({
+    titleTag: `${h1} — browse space-policy tidbits | Space Quotes`,
+    desc, canonical: `${SITE}/${kind}/`, h1, lede: desc,
+    crumbs: [{ name: "Space Quotes", url: "/" }, { name: h1, url: `/${kind}/` }],
+    rowsHtml: rows,
+  });
+}
+
 // ---------- homepage ----------
-function homePage(items) {
+function homePage(items, topicEntries = []) {
   const desc = "Space Quotes surfaces real, sourced tidbits from the FCC, ITU and FAA filings shaping life in orbit — each paired with a timeless space quote. Verified against primary documents, built to share.";
   const featured = items[0];
   const rest = items.slice(1, 7);
@@ -402,6 +485,10 @@ section{padding:44px 0}
 .card h3{font-family:'Fraunces',Georgia,serif;font-size:20px;line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.3px}
 .card p{color:var(--muted);font-size:15px;margin:0 0 16px;font-family:'Newsreader',Georgia,serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-read{color:var(--accent);font-size:14px;font-weight:600}
+.topics{display:flex;flex-wrap:wrap;gap:10px}
+.topic{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--bd);background:var(--panel);color:var(--muted);font-size:15px;transition:border-color .15s,color .15s,background .15s}
+.topic:hover{border-color:var(--accent);color:#fff;background:rgba(91,140,255,.07)}
+.topic span{font-size:12px;color:var(--dim);background:rgba(120,150,255,.14);border-radius:999px;padding:1px 8px}
 .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;padding:40px;border-radius:22px;background:var(--panel);border:1px solid var(--bd)}
 .chip{width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--accent);background:radial-gradient(120% 120% at 30% 20%,rgba(111,155,255,.18),transparent);margin-bottom:14px}
 .chip svg{width:22px;height:22px}
@@ -424,7 +511,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
 <div class="stars"></div><div class="glow"></div>
 <header><div class="shell bar">
   <div class="brand">${ICONS.star}SPACE QUOTES</div>
-  <nav class="nav"><a href="#latest">Tidbits</a><a href="/tidbits/">Archive</a><a href="#about">About</a></nav>
+  <nav class="nav"><a href="#latest">Tidbits</a><a href="/topics/">Topics</a><a href="/tidbits/">Archive</a><a href="#about">About</a></nav>
 </div></header>
 
 <main class="shell">
@@ -453,6 +540,11 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
   ${rest.length ? `<section>
     <div class="sec-h"><h2>More space-policy tidbits</h2></div>
     <div class="grid">${rest.map(card).join("\n")}</div>
+  </section>` : ""}
+
+  ${topicEntries.length ? `<section id="topics">
+    <div class="sec-h"><h2>Browse by topic</h2><a href="/topics/">All topics →</a></div>
+    <div class="topics">${topicEntries.slice(0, 10).map((t) => `<a class="topic" href="/topics/${t.slug}/">${esc(t.label)} <span>${t.n}</span></a>`).join("")}</div>
   </section>` : ""}
 
   <section id="about">
@@ -516,11 +608,12 @@ ${entries}
 `;
 }
 
-function sitemap(items) {
+function sitemap(items, hubPaths = []) {
   const today = new Date().toISOString().slice(0, 10);
   const urls = [
     { loc: `${SITE}/`, pri: "1.0", freq: "daily", lastmod: today },
     { loc: `${SITE}/tidbits/`, pri: "0.9", freq: "daily", lastmod: today },
+    ...hubPaths.map((p) => ({ loc: `${SITE}${p}`, pri: "0.7", freq: "weekly", lastmod: today })),
     ...items.map((it) => ({ loc: `${SITE}/tidbits/${it.fm.slug}/`, pri: "0.8", freq: "monthly", lastmod: it.fm.date })),
   ];
   const body = urls
@@ -551,15 +644,41 @@ for (const it of items) {
   if (!quote) throw new Error(`unknown quote_id ${it.fm.quote_id} in ${it.fm.slug}`);
   const ogImage = ogCard(it.fm.slug, it.fm, quote);
   const desc = metaDescription(it.body);
-  const html = page(it.fm, bodyToHtml(it.body), quote, ogImage, desc, it.mtime, relatedFor(it));
+  const html = page(it.fm, bodyToHtml(it.body), quote, ogImage, desc, it.mtime, relatedFor(it), it.docket);
   const dir = join(ROOT, "tidbits", it.fm.slug);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "index.html"), html);
   console.log(`  tidbits/${it.fm.slug}/`);
 }
+
+// ---- hub-and-spoke: topic + docket hubs and their indexes ----
+const byTag = {};
+const byDocket = {};
+for (const it of items) {
+  for (const t of Array.isArray(it.fm.tags) ? it.fm.tags : it.fm.tags ? [it.fm.tags] : []) (byTag[t] ||= []).push(it);
+  if (it.docket) (byDocket[it.docket] ||= []).push(it);
+}
+const hubUrls = [];
+const writeHub = (dir, slug, html) => {
+  const d = join(ROOT, dir, slug);
+  mkdirSync(d, { recursive: true });
+  writeFileSync(join(d, "index.html"), html);
+  hubUrls.push(`/${dir}/${slug}/`);
+};
+for (const [tag, its] of Object.entries(byTag)) writeHub("topics", tag, topicHub(tag, humanizeTag(tag), its));
+for (const [dk, its] of Object.entries(byDocket)) writeHub("dockets", dk, docketHub(dk, its));
+
+const topicEntries = Object.entries(byTag).map(([slug, its]) => ({ slug, label: humanizeTag(slug), n: its.length })).sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
+const docketEntries = Object.entries(byDocket).map(([slug, its]) => ({ slug, label: `Docket ${slug}`, sub: docketLabel(slug), n: its.length })).sort((a, b) => b.n - a.n || a.slug.localeCompare(b.slug));
+mkdirSync(join(ROOT, "topics"), { recursive: true });
+mkdirSync(join(ROOT, "dockets"), { recursive: true });
+writeFileSync(join(ROOT, "topics", "index.html"), hubIndex("topics", topicEntries));
+writeFileSync(join(ROOT, "dockets", "index.html"), hubIndex("dockets", docketEntries));
+const hubIndexUrls = ["/topics/", "/dockets/"];
+
 mkdirSync(join(ROOT, "tidbits"), { recursive: true });
 writeFileSync(join(ROOT, "tidbits", "index.html"), feedPage(items));
-writeFileSync(join(ROOT, "index.html"), homePage(items));
+writeFileSync(join(ROOT, "index.html"), homePage(items, topicEntries));
 writeFileSync(join(ROOT, "feed.xml"), feedXml(items));
-writeFileSync(join(ROOT, "sitemap.xml"), sitemap(items));
-console.log(`built homepage + ${items.length} tidbit(s) + feed + RSS + sitemap`);
+writeFileSync(join(ROOT, "sitemap.xml"), sitemap(items, [...hubIndexUrls, ...hubUrls]));
+console.log(`built homepage + ${items.length} tidbit(s) + ${Object.keys(byTag).length} topic + ${Object.keys(byDocket).length} docket hubs + feed + RSS + sitemap`);

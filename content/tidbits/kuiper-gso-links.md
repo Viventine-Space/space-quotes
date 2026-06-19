@@ -5,6 +5,7 @@ date: 2026-01-29
 source_label: "FCC ECFS · SB Docket 25-157 · Letter"
 source_url: "https://www.fcc.gov/ecfs/document/10129908013106/1"
 quote_id: garan-small-town
+tags: [spectrum-sharing, ngso, gso, spectrum, fcc, kuiper]
 ---
 
 On January 29, 2026, **Kuiper Systems LLC** — the Amazon satellite venture now permanently

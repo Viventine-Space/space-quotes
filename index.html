@@ -78,6 +78,10 @@ section{padding:44px 0}
 .card h3{font-family:'Fraunces',Georgia,serif;font-size:20px;line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.3px}
 .card p{color:var(--muted);font-size:15px;margin:0 0 16px;font-family:'Newsreader',Georgia,serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .card-read{color:var(--accent);font-size:14px;font-weight:600}
+.topics{display:flex;flex-wrap:wrap;gap:10px}
+.topic{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1px solid var(--bd);background:var(--panel);color:var(--muted);font-size:15px;transition:border-color .15s,color .15s,background .15s}
+.topic:hover{border-color:var(--accent);color:#fff;background:rgba(91,140,255,.07)}
+.topic span{font-size:12px;color:var(--dim);background:rgba(120,150,255,.14);border-radius:999px;padding:1px 8px}
 .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;padding:40px;border-radius:22px;background:var(--panel);border:1px solid var(--bd)}
 .chip{width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--accent);background:radial-gradient(120% 120% at 30% 20%,rgba(111,155,255,.18),transparent);margin-bottom:14px}
 .chip svg{width:22px;height:22px}
@@ -100,7 +104,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
 <div class="stars"></div><div class="glow"></div>
 <header><div class="shell bar">
   <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/></svg>SPACE QUOTES</div>
-  <nav class="nav"><a href="#latest">Tidbits</a><a href="/tidbits/">Archive</a><a href="#about">About</a></nav>
+  <nav class="nav"><a href="#latest">Tidbits</a><a href="/topics/">Topics</a><a href="/tidbits/">Archive</a><a href="#about">About</a></nav>
 </div></header>
 
 <main class="shell">
@@ -140,6 +144,11 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
         <p>On November 18, 2025, the Competitive Carriers Association (CCA) filed an opposition in FCC docket 25-201 against the applications of AST &amp; Science, AT&amp;T, Ve…</p>
         <span class="card-read">Read the tidbit →</span>
       </a></div>
+  </section>
+
+  <section id="topics">
+    <div class="sec-h"><h2>Browse by topic</h2><a href="/topics/">All topics →</a></div>
+    <div class="topics"><a class="topic" href="/topics/fcc/">FCC <span>3</span></a><a class="topic" href="/topics/direct-to-cell/">Direct-to-cell <span>2</span></a><a class="topic" href="/topics/spectrum/">Spectrum <span>2</span></a><a class="topic" href="/topics/ast-spacemobile/">AST SpaceMobile <span>1</span></a><a class="topic" href="/topics/competition/">Competition <span>1</span></a><a class="topic" href="/topics/deorbit/">Deorbit <span>1</span></a><a class="topic" href="/topics/gso/">GSO <span>1</span></a><a class="topic" href="/topics/kuiper/">Kuiper <span>1</span></a><a class="topic" href="/topics/ngso/">NGSO <span>1</span></a><a class="topic" href="/topics/orbital-debris/">Orbital Debris <span>1</span></a></div>
   </section>
 
   <section id="about">

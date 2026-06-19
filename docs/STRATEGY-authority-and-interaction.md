@@ -42,10 +42,14 @@ claim is an existential withdrawal from it.
 Organization (with logo) + ItemList; per-tidbit Article (ImageObject) + BreadcrumbList; real
 RSS at `/feed.xml`; OG/Twitter cards (per-tidbit + brand home card); sitemap with lastmod;
 semantic headings (incl. "Why it matters" as `<h2>`); fast static, mobile-first, reduced-motion.
+**Hub-and-spoke architecture** — `/topics/<tag>/` and `/dockets/<num>/` hub pages with
+BreadcrumbList + ItemList schema, `/topics/` and `/dockets/` index pages, "Filed under" chips
+on every tidbit (→ hubs), a "Browse by topic" section on the homepage, and all hubs in the
+sitemap. This is the cluster backbone that lets long-tail tidbits and head-term hubs reinforce
+each other.
 
 **Backlog (prioritized):**
-1. **Topic/docket hub pages** + cross-links (biggest crawl + ranking win).
-2. **FAQPage schema** on tidbits (2–3 Q&As mirroring headings) → CTR + featured snippets.
+1. **FAQPage schema** on tidbits (2–3 Q&As mirroring headings) → CTR + featured snippets.
 3. **Named author / editorial entity** + `sameAs` social profiles on Organization → entity
    authority + knowledge panel eligibility.
 4. **Self-host fonts** (drop the Google Fonts request) for privacy + LCP.
@@ -84,8 +88,9 @@ The accelerant is **trust**: the more reliably accurate we are, the more freely 
 - **Pipeline health:** publish cadence, verification pass-rate (and that it's never bypassed).
 
 ## 7. Next builds (recommended order)
-1. **Topic/docket hub pages** (cluster architecture) — unlocks ranking + crawl.
+1. ~~Topic/docket hub pages (cluster architecture)~~ — **shipped.**
 2. **About/methodology page** + named editorial entity + `sameAs` — E-E-A-T + link target.
 3. **FAQ schema + deeper bodies** — rich results + long-tail depth.
 4. **Email digest + social automation** off the existing share cards — distribution.
-5. Keep the content engine running: a few verified tidbits per week, no exceptions to the gate.
+5. **Go live** (merge → push) and submit the sitemap to Search Console.
+6. Keep the content engine running: a few verified tidbits per week, no exceptions to the gate.
