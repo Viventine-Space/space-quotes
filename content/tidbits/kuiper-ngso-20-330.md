@@ -14,17 +14,18 @@ faq:
   A: Yes. The filing identifies Kuiper Systems LLC as a wholly owned subsidiary of Amazon.com Services LLC.
 ---
 
-Amazon wants more room for satellite broadband. In a September 24, 2024 ex parte letter, its
-Kuiper Systems unit pressed the FCC to adopt a draft order opening the 17.3–17.8 GHz band for
-non-geostationary satellite downlinks. The case it makes is one of coexistence: commenters,
-Amazon wrote, have built "a robust record demonstrating that NGSO FSS operations can co-exist
-with other services," and the letter works to answer worries from AT&T and Verizon about
-interference with their ground-based operations.
+Amazon wants more room for satellite broadband, and it told the FCC the homework is done. In an
+ex parte letter filed September 24, 2024, its Kuiper Systems unit urged the Commission to adopt
+a draft order opening the 17.3–17.8 GHz band for non-geostationary satellite downlinks.
+Commenters, Amazon wrote, have built "a robust record demonstrating that NGSO FSS operations can
+co-exist with other services," and it pointed to its own technical interference study, which the
+draft order itself called persuasive. The remaining sticking point, Amazon said, is a late
+proposal from AT&T and Verizon to require extra interference analysis, which it wants rejected so
+the order can pass at the September open meeting.
 
-It is a familiar bargain in spectrum policy. A newcomer wants a band; the incumbents on it want
-proof they will not be harmed. Docket 20-330 holds 50 filings.
+Docket 20-330 holds 50 filings.
 
-> "a robust record demonstrating that NGSO FSS operations can co-exist with other services"
+> "no technical issues remain unresolved"
 > — Amazon (Kuiper Systems), FCC docket 20-330
 
 *Sources: [FCC ECFS filing →](https://www.fcc.gov/ecfs/document/10924888527623/1) · Orbit Sentinel (docket 20-330)*

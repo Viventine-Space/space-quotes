@@ -17,14 +17,15 @@ faq:
 The Competitive Carriers Association represents wireless providers that range, in its words,
 from "small, rural carriers serving fewer than 5,000 customers" to national networks. On
 November 18, 2025 it asked the FCC to reject a satellite-to-phone plan from AST & Science, AT&T,
-Verizon and FirstNet, warning that its members could face interference if satellites operate
-over spectrum those carriers are licensed to use. CCA asked the Commission to require a complete
-CONUS GIA or deny the application outright.
+Verizon and FirstNet. The applications, it argued, "seek to authorize secondary satellite
+operations over licensed spectrum without the consent of the primary licensees," and shift the
+burden so that a rural carrier would have to prove after the fact that the satellite service
+caused a dropped call, including a dropped 911 call.
 
-Docket 25-201 is contested: 145 filings, including 94 comments and 8 oppositions, from parties
-including SpaceX, T-Mobile and Verizon.
+CCA asked the Commission to require a complete CONUS GIA or deny the application. Docket 25-201
+is contested: 145 filings, including 94 comments and 8 oppositions.
 
-> "seek to authorize secondary satellite operations over licensed spectrum without the consent of the primary licensees"
+> "form a CONUS GIA that includes CCA members as participants rather than excludes them as victims"
 > — Competitive Carriers Association, FCC docket 25-201
 
 *Sources: [FCC ECFS filing →](https://www.fcc.gov/ecfs/document/1118442713143/1) · Orbit Sentinel (docket 25-201)*

@@ -15,16 +15,17 @@ faq:
 ---
 
 Before a satellite dies, someone has to plan how it falls. In a February 20, 2026 supplement to
-the FCC, AST & Science (AST SpaceMobile) laid out its plan after coordinating with NASA. Rather
-than let a failed spacecraft tumble at random, the company said it will fire thrusters to drop
-satellites from 680–690 km to below 530 km, then hold them in a high-drag, gravity-gradient
-orientation until they reenter, a phase it expects to last 1.5 to 3.5 years.
+the FCC, AST & Science (AST SpaceMobile) replaced a passive plan with an active one. After
+coordinating with NASA, the company said that "in lieu of relying upon random tumbling as a
+last-resort contingency," it will "deorbit and control spacecraft in a high-drag,
+gravity-gradient stable orientation" to "improve predictability of orbital trajectories, enhance
+collision-avoidance capabilities, and mitigate the passive deorbit phase."
 
-AST's spacecraft are unusually large, and the filing leans on that fact: because of the "very
-large phased-array cross section," it says, drag gives more control over the fall than thrusters
-do. The proceeding is crowded, with 145 filings including 94 comments and 8 oppositions.
+In practice that means firing thrusters to drop satellites from 680–690 km to below 530 km, then
+holding the high-drag orientation until reentry, a phase it expects to last 1.5 to 3.5 years.
+The proceeding has 145 filings, including 94 comments and 8 oppositions.
 
-> "modifying the drag profile provides greater control than thrusters"
+> "in lieu of relying upon random tumbling as a last-resort contingency, AST SpaceMobile will deorbit and control spacecraft in a high-drag, gravity-gradient stable orientation"
 > — AST SpaceMobile, FCC docket 25-201
 
 *Sources: [FCC ECFS filing →](https://www.fcc.gov/ecfs/document/102202160628149/1) · Orbit Sentinel (docket 25-201)*

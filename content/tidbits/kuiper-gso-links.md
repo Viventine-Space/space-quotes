@@ -18,10 +18,12 @@ Amazon thinks the FCC is refereeing a modern spectrum fight with an outdated rul
 January 29, 2026 letter, its Kuiper Systems unit asked the Commission to adopt a "modern,
 realistic set of GSO reference links" for sharing Ka-band spectrum between geostationary and
 non-geostationary satellite systems. The current references, Amazon argued, date to an era when
-"use of the Ka-band was still in its infancy." It pointedly takes no position on the Ku-band.
+"use of the Ka-band was still in its infancy." It backs the case with data, studying thousands
+of real link-pairs and proposing four reference links it calls "protectively representative of
+97.6% of the links studied." It takes no position on the Ku-band.
 
-Docket 25-157 has drawn the heavyweights: 103 filings, including 56 comments, with Viasat,
-SpaceX, SES, DIRECTV and Eutelsat all on the record.
+Docket 25-157 has drawn 103 filings, including 56 comments, with Viasat, SpaceX, SES, DIRECTV
+and Eutelsat on the record.
 
 > "use of the Ka-band was still in its infancy"
 > — Amazon (Kuiper Systems), FCC docket 25-157

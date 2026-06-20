@@ -1,6 +1,6 @@
 ---
 slug: planet-labs-25-306
-title: "Planet Labs backs the FCC's push to make licensing satellites faster"
+title: "Planet Labs backs faster satellite licensing, with a warning about what would still slow it down"
 date: 2026-02-19
 source_label: "FCC ECFS · Docket 25-306 · Reply comments"
 source_url: "https://www.fcc.gov/ecfs/document/102193090926816/1"
@@ -14,17 +14,19 @@ faq:
   A: It supports information-sharing certification requirements to reduce orbital debris risk, while rejecting "unsupported, stringent new thresholds for maneuvers, accidental explosions and reliability" beyond Commission or NASA proposals.
 ---
 
-Planet Labs wants the FCC to get out of its own way. In reply comments filed February 19, 2026,
-the company said it "strongly supports" the Commission's effort to modernize and streamline how
-it licenses satellites and ground stations, arguing the "health and competitiveness of the U.S.
-satellite industry depend on a regulatory environment that matches the speed of private-sector
-innovation." Planet backs a shift to certification-based licensing and dropping bond
-requirements for NGSO systems with fewer than 200 spacecraft.
+Planet Labs wants the FCC to license satellites faster, and it has a warning about why faster
+licensing alone will not be enough. In reply comments filed February 19, 2026, the company said
+it "strongly supports" modernizing the FCC's space and earth station rules, because the "health
+and competitiveness of the U.S. satellite industry depend on a regulatory environment that
+matches the speed of private-sector innovation." It backs certification-based licensing and
+dropping bond requirements for NGSO systems with fewer than 200 spacecraft. But the benefits of
+streamlined FCC licensing, Planet argued, will stay "unrealized" as long as the separate federal
+interagency spectrum-coordination process remains a bottleneck.
 
-It draws one careful line on safety. Planet supports new information-sharing certifications to
-reduce orbital debris risk, but rejects "unsupported, stringent new thresholds for maneuvers,
-accidental explosions and reliability" beyond what the FCC or NASA propose. Docket 25-306 holds
-121 filings, including 107 comments.
+On safety it draws a line: Planet supports information-sharing certifications to reduce orbital
+debris risk, but rejects "unsupported, stringent new thresholds for maneuvers, accidental
+explosions and reliability" beyond what the FCC or NASA propose. Docket 25-306 holds 121 filings,
+including 107 comments.
 
 > "a regulatory environment that matches the speed of private-sector innovation"
 > — Planet Labs, FCC docket 25-306
