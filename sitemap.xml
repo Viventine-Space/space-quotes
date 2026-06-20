@@ -85,13 +85,37 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/spectrum-sharing/</loc>
+    <loc>https://spacequotes.org/topics/orbital-datacenter/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/in-space-computing/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/ai/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/starcloud/</loc>
     <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/ngso/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/spectrum-sharing/</loc>
     <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -139,6 +163,30 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://spacequotes.org/topics/in-orbit-servicing/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/refueling/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/astroscale/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/geostationary/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://spacequotes.org/topics/17-ghz/</loc>
     <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -164,6 +212,18 @@
   </url>
   <url>
     <loc>https://spacequotes.org/topics/space-sustainability/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/edge-computing/</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/aethero/</loc>
     <lastmod>2026-06-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -217,6 +277,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://spacequotes.org/tidbits/starcloud-datacenter/</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://spacequotes.org/tidbits/kuiper-gso-links/</loc>
     <lastmod>2026-01-29</lastmod>
     <changefreq>monthly</changefreq>
@@ -235,6 +301,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://spacequotes.org/tidbits/astroscale-refueling-demo/</loc>
+    <lastmod>2024-12-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://spacequotes.org/tidbits/kuiper-ngso-20-330/</loc>
     <lastmod>2024-09-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -243,6 +315,12 @@
   <url>
     <loc>https://spacequotes.org/tidbits/iridium-debris-18-313/</loc>
     <lastmod>2024-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/aethero-edge-compute/</loc>
+    <lastmod>2024-03-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
