@@ -17,7 +17,15 @@ import { execFileSync } from "node:child_process";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://spacequotes.org";
 const CONTENT = join(ROOT, "content", "tidbits");
-const SAME_AS = []; // add social profile URLs here when they exist (X, LinkedIn, GitHub)
+const SAME_AS = ["https://www.linkedin.com/in/acaracappa/", "https://github.com/acaracappa", "https://viventine.com"];
+const AUTHOR = {
+  "@type": "Person",
+  name: "Anthony Caracappa",
+  description: "Anthony Caracappa writes Space Quotes, tracking the FCC, ITU and FAA filings that shape life in orbit using tools from viventine.com.",
+  url: "https://viventine.com",
+  sameAs: ["https://www.linkedin.com/in/acaracappa/", "https://github.com/acaracappa"],
+};
+const AUTHOR_NAME = "Anthony Caracappa";
 
 // Tidbits now use verbatim quotes pulled from the filings themselves (see memory:
 // content-direction-v2). The famous-quote library is retired from tidbits.
@@ -208,7 +216,7 @@ function page(fm, bodyHtml, pull, ogImage, desc, mtime, related, docket, faq = [
   const article = {
     "@context": "https://schema.org", "@type": "Article",
     headline: fm.title, datePublished: isoPub, dateModified: mtime,
-    author: { "@type": "Organization", name: "Space Quotes", url: SITE },
+    author: AUTHOR,
     publisher: { "@type": "Organization", name: "Space Quotes", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 } },
     mainEntityOfPage: url,
     image: { "@type": "ImageObject", url: `${SITE}${ogImage}`, width: 1200, height: 630 },
@@ -270,7 +278,10 @@ nav{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px
 nav a{color:var(--muted);text-decoration:none}
 nav a:focus-visible,article a:focus-visible,.related a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5.2vw,44px);line-height:1.16;margin:0 0 12px;font-weight:800;letter-spacing:-.4px;padding-bottom:.06em}
-.src{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:12.5px;color:#9fb0e0;letter-spacing:.4px;text-transform:uppercase;margin-bottom:30px}
+.src{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:12.5px;color:#9fb0e0;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.byline{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim);margin-bottom:30px}
+.byline a{color:var(--muted);text-decoration:none}
+.byline a:hover{color:var(--accent)}
 .body p{margin:0 0 22px}
 .body h2.why{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;margin:34px 0 12px;letter-spacing:-.3px}
 .tq{margin:34px 0;padding:6px 0 6px 26px;border-left:3px solid var(--accent)}
@@ -303,6 +314,7 @@ footer{margin-top:48px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-s
 <article>
 <h1>${esc(fm.title)}</h1>
 <div class="src">${esc(fm.source_label || "")} · ${esc(fm.date)}</div>
+<div class="byline">By <a rel="author" href="${AUTHOR.url}">${esc(AUTHOR_NAME)}</a></div>
 <div class="body">
 ${bodyHtml}
 </div>
@@ -310,7 +322,7 @@ ${filedHtml}
 </article>
 ${faqHtml}
 ${relHtml}
-<footer>A <a href="/tidbits/">Space Quotes tidbit</a> — the quotable lines from real space-regulatory filings, with a link to the source. <a href="/about/">How we source &amp; verify</a> · <a href="/">spacequotes.org</a></footer>
+<footer>Written by <a rel="author" href="${AUTHOR.url}">${esc(AUTHOR_NAME)}</a> · a <a href="/tidbits/">Space Quotes tidbit</a>, the quotable lines from real space-regulatory filings. <a href="/about/">How we source &amp; verify</a> · <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> · <a rel="me" href="https://github.com/acaracappa">GitHub</a></footer>
 </div>
 </body>
 </html>
@@ -450,7 +462,7 @@ function homePage(items, topicEntries = []) {
       </a>`;
   const itemList = { "@context": "https://schema.org", "@type": "ItemList", itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/tidbits/${it.fm.slug}/`, name: it.fm.title })) };
   const website = { "@context": "https://schema.org", "@type": "WebSite", name: "Space Quotes", url: SITE, description: desc };
-  const org = { "@context": "https://schema.org", "@type": "Organization", name: "Space Quotes", url: SITE, description: "Sourced, verified tidbits from space-regulatory filings, built around the quotable lines operators and regulators actually file.", logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 }, ...(SAME_AS.length ? { sameAs: SAME_AS } : {}) };
+  const org = { "@context": "https://schema.org", "@type": "Organization", name: "Space Quotes", url: SITE, description: "Sourced, verified tidbits from space-regulatory filings, built around the quotable lines operators and regulators actually file.", logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 }, founder: AUTHOR, ...(SAME_AS.length ? { sameAs: SAME_AS } : {}) };
   const pulls = items.map((it) => it.pull).filter((p) => p && p.text);
   const Q = JSON.stringify(pulls.map((p) => ({ q: p.text, a: p.by })));
   const firstPull = pulls[0] || { text: "The future of space is written in the fine print.", by: "Space Quotes" };
@@ -601,7 +613,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
 
 <footer><div class="shell foot">
   <div>✦ Space Quotes — the paperwork of leaving Earth, read between the lines.</div>
-  <div><a href="/tidbits/">Tidbits</a> · <a href="/about/">About</a> · <a href="/feed.xml">RSS</a> · <a href="/sitemap.xml">Sitemap</a> · spacequotes.org</div>
+  <div><a href="/tidbits/">Tidbits</a> · <a href="/about/">About</a> · <a href="/feed.xml">RSS</a> · <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> · <a rel="me" href="https://github.com/acaracappa">GitHub</a></div>
 </div></footer>
 
 <script>
@@ -623,7 +635,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
 function aboutPage() {
   const desc = "How Space Quotes works: every tidbit is built from primary FCC, ITU and FAA filings, verified against the source record before publishing, and built around a verbatim line from the filing.";
   const url = `${SITE}/about/`;
-  const aboutLd = { "@context": "https://schema.org", "@type": "AboutPage", name: "About Space Quotes", url, description: desc, isPartOf: { "@type": "WebSite", name: "Space Quotes", url: SITE }, publisher: { "@type": "Organization", name: "Space Quotes", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 } } };
+  const aboutLd = { "@context": "https://schema.org", "@type": "AboutPage", name: "About Space Quotes", url, description: desc, author: AUTHOR, mainEntity: AUTHOR, isPartOf: { "@type": "WebSite", name: "Space Quotes", url: SITE }, publisher: { "@type": "Organization", name: "Space Quotes", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 }, founder: AUTHOR, sameAs: SAME_AS } };
   const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Space Quotes", item: `${SITE}/` }, { "@type": "ListItem", position: 2, name: "About", item: url }] };
   return `<!DOCTYPE html>
 <html lang="en">
@@ -687,6 +699,9 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 
 <h2>Why the quotes come from the filings</h2>
 <p>A docket number is easy to ignore. The actual sentence a company, a lawyer, or a rural carrier wrote into the record is not. Pulling the real line out of the paperwork is how we make a filing readable, and worth sharing, without putting words in anyone's mouth.</p>
+
+<h2>Who writes Space Quotes</h2>
+<p>Space Quotes is written by <strong>Anthony Caracappa</strong>, who tracks the FCC, ITU and FAA filings that shape life in orbit using tools from <a href="https://viventine.com">viventine.com</a>. You can find him on <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> and <a rel="me" href="https://github.com/acaracappa">GitHub</a>.</p>
 
 <h2>Corrections</h2>
 <p>Found an error? Accuracy is the whole point of this site, and we'll correct or remove anything that turns out to be wrong.</p>
