@@ -6,7 +6,7 @@
     <atom:link href="https://spacequotes.org/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Sourced tidbits from real FCC, ITU and FAA space filings, each built around a quotable line from the filing.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jun 2026 01:53:55 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 05 Jul 2026 20:04:16 GMT</lastBuildDate>
     <item>
       <title>Sateliot asks the full FCC to overturn a one-paragraph dismissal of its satellite-IoT petition</title>
       <link>https://spacequotes.org/tidbits/satelio-iot-services-usa-inc-23-135/</link>
@@ -48,6 +48,13 @@
       <guid isPermaLink="true">https://spacequotes.org/tidbits/cca-oppose-25-201/</guid>
       <pubDate>Tue, 18 Nov 2025 09:00:00 GMT</pubDate>
       <description>The Competitive Carriers Association represents wireless providers that range, in its words, from &quot;small, rural carriers serving fewer than 5,000 customers&quot; …</description>
+    </item>
+    <item>
+      <title>A radio educator asks the FCC to keep AST SpaceMobile out of the 430-440 MHz ham band</title>
+      <link>https://spacequotes.org/tidbits/k1sto-oppose-25-201/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/k1sto-oppose-25-201/</guid>
+      <pubDate>Tue, 05 Aug 2025 09:00:00 GMT</pubDate>
+      <description>Rosalie Ann White, a former schoolteacher and Amateur Extra Class licensee with call sign K1STO, says she read over 150 filed comments in FCC docket 25-201 b…</description>
     </item>
     <item>
       <title>SpaceX wants EchoStar's appeal of its direct-to-cell waiver thrown out</title>
