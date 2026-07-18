@@ -6,7 +6,14 @@
     <atom:link href="https://spacequotes.org/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Sourced tidbits from real FCC, ITU and FAA space filings, each built around a quotable line from the filing.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Jul 2026 20:04:16 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jul 2026 22:24:41 GMT</lastBuildDate>
+    <item>
+      <title>SpaceX tells FCC that zero of Viasat's 657 proposed reference links pass the screening criteria</title>
+      <link>https://spacequotes.org/tidbits/space-exploration-holdings-llc-25-157/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/space-exploration-holdings-llc-25-157/</guid>
+      <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
+      <description>GSO operators &quot;now seek to collapse that framework from within,&quot; SpaceX told the FCC in July 14 reply comments on the reference links that will implement the…</description>
+    </item>
     <item>
       <title>Sateliot asks the full FCC to overturn a one-paragraph dismissal of its satellite-IoT petition</title>
       <link>https://spacequotes.org/tidbits/satelio-iot-services-usa-inc-23-135/</link>
