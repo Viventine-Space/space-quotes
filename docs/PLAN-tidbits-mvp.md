@@ -1,5 +1,13 @@
 # Space Quotes → Tidbits: MVP Plan (v2 — grounding-first)
 
+> **Historical document — kept as the record of the June 2026 MVP, not current guidance.**
+> The plan below pairs each filing with a famous quote drawn from a pre-vetted
+> `data/quotes.json` corpus. That approach was retired: tidbits are now built around a
+> verbatim pull-quote taken from the filing itself, and `data/quotes.json` has been deleted.
+> `.claude/skills/tidbit/SKILL.md` and the `README.md` describe the pipeline as it works today.
+> Everything else here (the grounding architecture, the publishability gate, the harness
+> results) still reflects how the tools behave.
+
 ## Reprioritization (what changed)
 The existing quote site is **not sacred**. We will **tear it down and rebuild** a better,
 more focused site before go-live. Publishing/SEO/deployment is **not** the risk and not what

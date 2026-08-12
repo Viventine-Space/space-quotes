@@ -109,6 +109,7 @@ table, and the candidate's source link. State clearly it is **ready for review, 
 ## Hard rules
 - Never assert a fact not in `trusted_facts` or verbatim in `source.txt`.
 - Never use a `summary_only_claims` specific without primary-text confirmation.
-- Never invent, reattribute, or alter a quote — only `data/quotes.json`.
+- Never invent, reattribute, or alter a quote. The pull-quote must appear verbatim in
+  `out/<slug>/source.txt` and be attributed to whoever wrote it in the filing.
 - Never skip step 5. A tidbit that has not passed independent verification is not done.
 - Never publish or edit the live site from this skill.
