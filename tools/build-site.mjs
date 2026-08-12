@@ -1,5 +1,5 @@
 // Static site renderer for tidbits. NO LLM, no network.
-// Reads APPROVED tidbits from content/tidbits/*.md + data/quotes.json and renders:
+// Reads APPROVED tidbits from content/tidbits/*.md and renders:
 //   index.html                  tidbit-centric homepage
 //   tidbits/<slug>/index.html   permalinked tidbit pages (SEO/OG + Article/Breadcrumb JSON-LD)
 //   tidbits/index.html          feed (ItemList JSON-LD)
@@ -9,7 +9,7 @@
 //   sitemap.xml
 //
 // Usage: node tools/build-site.mjs
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, statSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -68,7 +68,7 @@ const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</
 const chip = (text, href) => (href ? `<a class="chiptag" href="${href}">${text}</a>` : `<span class="chiptag">${text}</span>`);
 
 // ---------- parsing ----------
-function parse(md, file) {
+function parse(md) {
   const m = md.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error("missing frontmatter");
   const fm = {};
@@ -91,7 +91,9 @@ function parse(md, file) {
   }
   const body = m[2].replace(/<!--[\s\S]*?-->/g, "").trim();
   const docket = (fm.source_label && (fm.source_label.match(/Docket\s+([0-9-]+)/) || [])[1]) || null;
-  const mtime = file ? statSync(file).mtime.toISOString() : new Date().toISOString();
+  // Last-modified comes from an optional `updated:` frontmatter date, never the file mtime
+  // (git does not preserve mtimes, so a fresh clone would restamp every article).
+  const modified = `${fm.updated || fm.date}T09:00:00Z`;
   // The pull-quote: the first blockquote in the body (verbatim line from the filing + attribution).
   let pull = null;
   const bq = body.split(/\n\s*\n/).find((b) => b.trim().startsWith(">"));
@@ -101,7 +103,7 @@ function parse(md, file) {
     const by = (inner[1] || "").replace(/^—\s*/, "").trim();
     if (text) pull = { text, by };
   }
-  return { fm, body, docket, mtime, faq, pull };
+  return { fm, body, docket, modified, faq, pull };
 }
 
 const inline = (s) =>
@@ -144,9 +146,41 @@ function teaser(body) {
 }
 
 // ---------- OG cards (ImageMagick native text; no librsvg/npm) ----------
-const FONT_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf";
-const FONT_REG = "/System/Library/Fonts/Supplemental/Arial.ttf";
-const FONT_ITALIC = "/System/Library/Fonts/Supplemental/Georgia Italic.ttf";
+const FONT_CANDIDATES = {
+  bold: [
+    "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    "/usr/share/fonts/liberation-sans/LiberationSans-Bold.ttf",
+  ],
+  regular: [
+    "/System/Library/Fonts/Supplemental/Arial.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+    "/usr/share/fonts/liberation-sans/LiberationSans-Regular.ttf",
+  ],
+  italic: [
+    "/System/Library/Fonts/Supplemental/Georgia Italic.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf",
+    "/usr/share/fonts/dejavu/DejaVuSerif-Italic.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf",
+    "/usr/share/fonts/liberation-serif/LiberationSerif-Italic.ttf",
+  ],
+};
+function resolveFont(kind) {
+  const hit = FONT_CANDIDATES[kind].find((p) => existsSync(p));
+  if (!hit) {
+    console.error(`No ${kind} font available for OG cards. Looked for:\n  ${FONT_CANDIDATES[kind].join("\n  ")}`);
+    console.error("Install DejaVu or Liberation fonts (or run on macOS with Arial/Georgia present).");
+    process.exit(1);
+  }
+  return hit;
+}
+const FONT_BOLD = resolveFont("bold");
+const FONT_REG = resolveFont("regular");
+const FONT_ITALIC = resolveFont("italic");
 function wrap(text, max) {
   const words = text.split(/\s+/), lines = [];
   let cur = "";
@@ -154,8 +188,15 @@ function wrap(text, max) {
   if (cur) lines.push(cur);
   return lines;
 }
+// OG cards ship with every page, so a failed render must not leave the HTML pointing at a
+// missing image — abort the whole build instead.
 function magick(args, label) {
-  try { execFileSync("magick", args); return true; } catch (e) { console.warn(`  OG card failed for ${label}: ${e.message}`); return false; }
+  try {
+    execFileSync("magick", args);
+  } catch (e) {
+    console.error(`OG card render failed for ${label}: ${e.message}`);
+    process.exit(1);
+  }
 }
 function ogCard(slug, fm, pull) {
   const ogDir = join(ROOT, "assets", "og");
@@ -217,7 +258,7 @@ const ICONS = {
 };
 
 // ---------- tidbit page ----------
-function page(fm, bodyHtml, pull, ogImage, desc, mtime, related, docket, faq = []) {
+function page(fm, bodyHtml, pull, ogImage, desc, modified, related, docket, faq = []) {
   const url = `${SITE}/tidbits/${fm.slug}/`;
   const faqHtml = faq.length
     ? `<section class="faq"><h2>Questions &amp; answers</h2><dl>${faq
@@ -237,7 +278,7 @@ function page(fm, bodyHtml, pull, ogImage, desc, mtime, related, docket, faq = [
   const isoPub = `${fm.date}T09:00:00Z`;
   const article = {
     "@context": "https://schema.org", "@type": "Article",
-    headline: fm.title, datePublished: isoPub, dateModified: mtime,
+    headline: fm.title, datePublished: isoPub, dateModified: modified,
     author: AUTHOR,
     publisher: { "@type": "Organization", name: "Space Quotes", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 } },
     mainEntityOfPage: url,
@@ -278,7 +319,7 @@ function page(fm, bodyHtml, pull, ogImage, desc, mtime, related, docket, faq = [
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${escAttr(fm.title)}">
 <meta property="article:published_time" content="${isoPub}">
-<meta property="article:modified_time" content="${mtime}">
+<meta property="article:modified_time" content="${modified}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escAttr(fm.title)}">
 <meta name="twitter:description" content="${escAttr(desc)}">
@@ -488,7 +529,9 @@ function homePage(items, topicEntries = [], docketEntries = []) {
   const website = { "@context": "https://schema.org", "@type": "WebSite", name: "Space Quotes", url: SITE, description: desc };
   const org = { "@context": "https://schema.org", "@type": "Organization", name: "Space Quotes", url: SITE, description: "Sourced, verified tidbits from space-regulatory filings, built around the quotable lines operators and regulators actually file.", logo: { "@type": "ImageObject", url: `${SITE}/assets/og/home.png`, width: 1200, height: 630 }, founder: AUTHOR, ...(SAME_AS.length ? { sameAs: SAME_AS } : {}) };
   const pulls = items.map((it) => it.pull).filter((p) => p && p.text);
-  const Q = JSON.stringify(pulls.map((p) => ({ q: p.text, a: p.by })));
+  // Escaped at build time: the rotator injects these through innerHTML, matching the
+  // server-rendered first quote below.
+  const Q = JSON.stringify(pulls.map((p) => ({ q: esc(p.text), a: esc(p.by) })));
   const firstPull = pulls[0] || { text: "The future of space is written in the fine print.", by: "Space Quotes" };
   return `<!DOCTYPE html>
 <html lang="en">
@@ -873,7 +916,7 @@ if (!existsSync(CONTENT)) {
 }
 const items = readdirSync(CONTENT)
   .filter((f) => f.endsWith(".md"))
-  .map((f) => parse(readFileSync(join(CONTENT, f), "utf8"), join(CONTENT, f)))
+  .map((f) => parse(readFileSync(join(CONTENT, f), "utf8")))
   .sort((a, b) => (a.fm.date < b.fm.date ? 1 : -1));
 
 // ---- group by tag/docket first, so tidbit pages know which hubs actually exist ----
@@ -897,7 +940,7 @@ ogHome();
 for (const it of items) {
   const ogImage = ogCard(it.fm.slug, it.fm, it.pull);
   const desc = metaDescription(it.body);
-  const html = page(it.fm, bodyToHtml(it.body), it.pull, ogImage, desc, it.mtime, relatedFor(it), it.docket, it.faq);
+  const html = page(it.fm, bodyToHtml(it.body), it.pull, ogImage, desc, it.modified, relatedFor(it), it.docket, it.faq);
   const dir = join(ROOT, "tidbits", it.fm.slug);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "index.html"), html);

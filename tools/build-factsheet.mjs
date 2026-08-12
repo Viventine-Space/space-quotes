@@ -7,7 +7,7 @@
 //     `summary_only_claims` that must be verified against the primary PDF or dropped.
 //
 // Usage: node tools/build-factsheet.mjs <filing_id> <slug>
-import { writeFileSync, readFileSync, mkdirSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, mkdirSync, existsSync, unlinkSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -116,6 +116,7 @@ const atts = (f.attachments || []).filter((a) => {
 if (atts.length) {
   const sections = [];
   const tmpPdf = join(outDir, "_att.pdf");
+  const tmpTxt = join(outDir, "_att.txt");
   let firstPdfPath = null;
   let totalBytes = 0;
   const used = [];
@@ -129,12 +130,12 @@ if (atts.length) {
     if (!firstPdfPath) { firstPdfPath = join(outDir, "source.pdf"); writeFileSync(firstPdfPath, buf); }
     totalBytes += buf.length;
     try {
-      const t = join(outDir, "_att.txt");
-      execFileSync("pdftotext", ["-layout", tmpPdf, t]);
-      sections.push(`===== ATTACHMENT: ${name} =====\n` + readFileSync(t, "utf8"));
+      execFileSync("pdftotext", ["-layout", tmpPdf, tmpTxt]);
+      sections.push(`===== ATTACHMENT: ${name} =====\n` + readFileSync(tmpTxt, "utf8"));
       used.push(name);
     } catch {}
   }
+  for (const tmp of [tmpPdf, tmpTxt]) if (existsSync(tmp)) unlinkSync(tmp);
   if (sections.length) {
     writeFileSync(join(outDir, "source.txt"), sections.join("\n\n"));
     primary = { attachments: used, pdf: "out/" + slug + "/source.pdf", text: "out/" + slug + "/source.txt", bytes: totalBytes };
@@ -157,7 +158,6 @@ const factsheet = {
   docket_context: docketContext,
   summary_only_claims: summaryOnly,
   primary_source: primary,
-  quote_corpus: "data/quotes.json",
   api_base: ENV.MCP_API_URL,
 };
 

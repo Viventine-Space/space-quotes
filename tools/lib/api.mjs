@@ -11,7 +11,7 @@ function loadEnv() {
   try {
     for (const line of readFileSync(join(ROOT, ".env"), "utf8").split("\n")) {
       const m = line.match(/^\s*([A-Z_]+)\s*=\s*(.*)\s*$/);
-      if (m) env[m[1]] = m[2];
+      if (m) env[m[1]] = m[2].trim();
     }
   } catch {
     throw new Error("Missing .env (MCP_API_URL, MCP_API_KEY) at repo root");

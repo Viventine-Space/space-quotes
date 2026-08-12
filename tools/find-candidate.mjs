@@ -21,7 +21,14 @@ const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
 const argv = process.argv.slice(2);
 const getArg = (name) => {
   const i = argv.indexOf(name);
-  return i >= 0 ? argv[i + 1] : null;
+  if (i < 0) return null;
+  const v = argv[i + 1];
+  if (v === undefined || v.startsWith("--")) {
+    console.error(`error: ${name} requires a value`);
+    console.error('usage: node tools/find-candidate.mjs [--id <uuid> | --docket <docket> | --q "<text>"]');
+    process.exit(1);
+  }
+  return v;
 };
 const idArg = getArg("--id");
 const docketArg = getArg("--docket");

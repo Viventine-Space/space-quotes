@@ -21,10 +21,18 @@ if (!existsSync(draft)) {
   process.exit(1);
 }
 
-// 1. promote draft -> published content
+// 1. style gate: the voice linter is a required check, not an advisory one
+try {
+  execFileSync("node", [join(ROOT, "tools", "style-check.mjs"), draft], { stdio: "inherit" });
+} catch {
+  console.error(`\nstyle check failed for out/${slug}/draft.md — fix the flagged lines, then publish again.`);
+  process.exit(1);
+}
+
+// 2. promote draft -> published content
 copyFileSync(draft, join(ROOT, "content", "tidbits", `${slug}.md`));
 
-// 2. record in the dedupe ledger (filing_id from the fact sheet, if present)
+// 3. record in the dedupe ledger (filing_id from the fact sheet, if present)
 const ledgerPath = join(ROOT, "data", "tidbits-published.json");
 const ledger = JSON.parse(readFileSync(ledgerPath, "utf8"));
 let filingId = null;
@@ -35,7 +43,7 @@ if (!ledger.published.some((p) => p.slug === slug)) {
   writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2) + "\n");
 }
 
-// 3. rebuild the static site
+// 4. rebuild the static site
 execFileSync("node", [join(ROOT, "tools", "build-site.mjs")], { stdio: "inherit" });
 
 console.log(`\npublished: content/tidbits/${slug}.md  ->  tidbits/${slug}/`);
