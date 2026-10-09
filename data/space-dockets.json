@@ -1,11 +1,16 @@
 {
-  "_comment": "Curated FCC Space Bureau dockets auto mode rotates through. These are pre-vetted as space-relevant and contested. Extend as new active proceedings appear.",
+  "_comment": "Curated FCC dockets auto mode rotates through, pre-vetted as space-relevant and contested. Labels render on docket hub pages, so each one follows the proceeding caption in a filed document. Extend as new active proceedings appear.",
   "dockets": [
-    { "docket": "18-313", "label": "Orbital debris mitigation rules" },
-    { "docket": "25-201", "label": "AST SpaceMobile NGSO license modification" },
-    { "docket": "25-157", "label": "Modernizing NGSO/GSO spectrum sharing" },
-    { "docket": "22-271", "label": "Supplemental coverage from space (direct-to-cell)" },
-    { "docket": "23-135", "label": "Space innovation / non-traditional missions" },
-    { "docket": "20-330", "label": "Kuiper / NGSO FSS constellation" }
+    { "docket": "18-313", "label": "Mitigation of orbital debris in the new space age" },
+    { "docket": "25-201", "label": "AST & Science, AT&T, Verizon and FirstNet Supplemental Coverage from Space authorization" },
+    { "docket": "25-157", "label": "Modernizing spectrum sharing for satellite broadband" },
+    { "docket": "22-271", "label": "Supplemental coverage from space" },
+    { "docket": "23-135", "label": "SpaceX and T-Mobile Supplemental Coverage from Space" },
+    { "docket": "20-330", "label": "NGSO FSS operations in the 17.3-17.8 GHz band" },
+    { "docket": "13-115", "label": "Ensuring reliable access to spectrum for space launch" },
+    { "docket": "25-302", "label": "SpaceX and EchoStar spectrum and earth station license assignment" },
+    { "docket": "26-54", "label": "Spectrum Abundance for Weird Space Stuff" },
+    { "docket": "25-306", "label": "Space modernization for the 21st century" },
+    { "docket": "24-30", "label": "FCC Docket 24-30" }
   ]
 }

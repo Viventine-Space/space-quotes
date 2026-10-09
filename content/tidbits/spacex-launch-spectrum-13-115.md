@@ -2,9 +2,9 @@
 slug: spacex-launch-spectrum-13-115
 title: "SpaceX asks the FCC to replace third-party launch-spectrum coordinating committees with an automated scheduling system"
 date: 2026-09-25
-source_label: "FCC · 13-115 · REPLY TO COMMENTS"
+source_label: "FCC ECFS · ET Docket 13-115 · Reply comments"
 source_url: "https://www.fcc.gov/ecfs/document/26110078211/1"
-tags: [spacex, launch-spectrum, aftrcc, frequency-coordination, docket-13-115]
+tags: [spacex, launch-spectrum, aftrcc, frequency-coordination, docket-13-115, fcc]
 faq:
   Q: What does SpaceX want the FCC to do in docket 13-115?
   A: Grant the Commercial Space Federation (CSF) petition and replace the current rules requiring third-party coordinating committees for launch spectrum with an automated scheduling system like the one the National Spectrum Management Association (NSMA) describes.

@@ -2,9 +2,9 @@
 slug: satelio-iot-services-usa-inc-23-135
 title: "Sateliot asks the full FCC to overturn a one-paragraph dismissal of its satellite-IoT petition"
 date: 2026-05-26
-source_label: "FCC · GN Docket 23-135 · Application for Review"
+source_label: "FCC ECFS · GN Docket 23-135 · Application for Review"
 source_url: "https://www.fcc.gov/ecfs/document/10526544806932/1"
-tags: [satellite-iot, spectrum-sharing, fcc-space-bureau, smallsat, mss-spectrum]
+tags: [satellite-iot, spectrum-sharing, fcc-space-bureau, smallsat, mss-spectrum, fcc]
 faq:
   Q: What did the FCC Space Bureau decide?
   A: On April 23, 2026 it dismissed Sateliot's petition for U.S. market access with prejudice, holding that the 2 GHz mobile-satellite band is reserved to its incumbent licensee, so Sateliot's plan was not "compatible with existing operations" under Section 25.122(c)(9).

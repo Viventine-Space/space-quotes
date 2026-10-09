@@ -2,9 +2,9 @@
 slug: astranis-gso-links-25-157
 title: "Astranis tells the FCC it could not reproduce SpaceX's numbers on two of its GSO reference links"
 date: 2026-09-30
-source_label: "FCC · 25-157 · LETTER"
+source_label: "FCC ECFS · SB Docket 25-157 · Letter"
 source_url: "https://www.fcc.gov/ecfs/document/26110078984/1"
-tags: [astranis, spacex, amazon-leo, gso-reference-links, docket-25-157]
+tags: [astranis, spacex, amazon-leo, gso-reference-links, docket-25-157, fcc]
 faq:
   Q: Which Astranis links are being challenged?
   A: Two of Astranis's Ka-band GSO reference links. Ex parte filings from SpaceX and Amazon Leo allege they fail Criterion 2 (meeting the link's stated baseline availability) and Criterion 3 (a minimum baseline availability of 99%).

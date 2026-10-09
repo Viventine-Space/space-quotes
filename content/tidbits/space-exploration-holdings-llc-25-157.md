@@ -2,9 +2,9 @@
 slug: space-exploration-holdings-llc-25-157
 title: "SpaceX tells FCC that zero of Viasat's 657 proposed reference links pass the screening criteria"
 date: 2026-07-14
-source_label: "FCC · 25-157 · REPLY TO COMMENTS"
+source_label: "FCC ECFS · SB Docket 25-157 · Reply comments"
 source_url: "https://www.fcc.gov/ecfs/document/26110016162/1"
-tags: [spacex, viasat, gso-reference-links, spectrum-sharing, docket-25-157]
+tags: [spacex, viasat, gso-reference-links, spectrum-sharing, docket-25-157, fcc]
 faq:
   Q: What are the GSO reference links?
   A: Per SpaceX's filing, the FCC's Satellite Spectrum Sharing Order replaced Equivalent Power Flux Density (EPFD) limits with short-term and long-term protection criteria, and next-generation satellite systems must demonstrate compliance against a set of GSO reference links the Space Bureau maintains.
