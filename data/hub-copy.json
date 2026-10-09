@@ -19,7 +19,7 @@
     "spectrum": {
       "title": "Satellite spectrum disputes at the FCC",
       "h1": "Spectrum",
-      "intro": "Filings over who gets which spectrum: Amazon on opening the 17 GHz band for satellite broadband and on Ka-band sharing rules, rural carriers objecting to satellites beaming over their spectrum without permission, a radio educator asking to keep AST SpaceMobile out of the 430-440 MHz ham band, and SpaceX opposing EchoStar's appeal of its direct-to-cell waiver."
+      "intro": "Filings over who gets which spectrum: Amazon on opening the 17 GHz band for satellite broadband and on Ka-band sharing rules, rural carriers objecting to satellites beaming over their spectrum without permission, a radio educator asking to keep AST SpaceMobile out of the 430-440 MHz ham band, and SpaceX opposing EchoStar's appeal of SpaceX's direct-to-cell waiver."
     },
     "spacex": {
       "title": "SpaceX at the FCC: filings, replies and oppositions",
@@ -74,7 +74,7 @@
     "echostar": {
       "title": "EchoStar at the FCC: filings and appeals",
       "h1": "EchoStar",
-      "intro": "EchoStar at the FCC: its application for review of an order excluding its own claims from a $2.4 billion trust, and SpaceX's opposition to EchoStar's appeal of SpaceX's direct-to-cell waiver."
+      "intro": "EchoStar at the FCC: its application for review of an order that, EchoStar says, excludes its own claims from a $2.4 billion trust, and SpaceX's opposition to EchoStar's appeal of SpaceX's direct-to-cell waiver."
     },
     "ast-spacemobile": {
       "title": "AST SpaceMobile at the FCC: Docket 25-201 filings",
