@@ -2,123 +2,207 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://spacequotes.org/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/tidbits/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/about/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/terms/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/dockets/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/spacex/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/spectrum-sharing/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://spacequotes.org/topics/gso-reference-links/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/orbital-debris/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://spacequotes.org/topics/docket-25-157/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/fcc/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://spacequotes.org/topics/launch-spectrum/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/direct-to-cell/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://spacequotes.org/topics/aftrcc/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spacequotes.org/topics/ast-spacemobile/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <loc>https://spacequotes.org/topics/docket-13-115/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/orbital-datacenter/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/ttc/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/fcc/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/spectrum-sharing/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/echostar/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/orbital-debris/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/direct-to-cell/</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/topics/ast-spacemobile/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/in-space-computing/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/ngso/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/spectrum/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/kuiper/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/topics/supplemental-coverage-from-space/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/dockets/13-115/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/dockets/23-135/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/dockets/25-201/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/astranis-gso-links-25-157/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/spacex-launch-spectrum-13-115/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/relativity-launch-spectrum-13-115/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/cowboy-space-launch-spectrum-13-115/</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/muon-space-ttc-26-54/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spacequotes.org/tidbits/echostar-afr-25-302/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://spacequotes.org/tidbits/space-exploration-holdings-llc-25-157/</loc>

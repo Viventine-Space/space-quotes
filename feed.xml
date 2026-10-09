@@ -6,7 +6,49 @@
     <atom:link href="https://spacequotes.org/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Sourced tidbits from real FCC, ITU and FAA space filings, each built around a quotable line from the filing.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 Aug 2026 14:09:37 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 09 Oct 2026 15:28:54 GMT</lastBuildDate>
+    <item>
+      <title>Astranis tells the FCC it could not reproduce SpaceX's numbers on two of its GSO reference links</title>
+      <link>https://spacequotes.org/tidbits/astranis-gso-links-25-157/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/astranis-gso-links-25-157/</guid>
+      <pubDate>Wed, 30 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Astranis says it could not reproduce SpaceX's results on two of its Ka-band GSO reference links. In a September 30 letter in FCC docket 25-157, the company a…</description>
+    </item>
+    <item>
+      <title>SpaceX asks the FCC to replace third-party launch-spectrum coordinating committees with an automated scheduling system</title>
+      <link>https://spacequotes.org/tidbits/spacex-launch-spectrum-13-115/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/spacex-launch-spectrum-13-115/</guid>
+      <pubDate>Fri, 25 Sep 2026 09:00:00 GMT</pubDate>
+      <description>SpaceX's reply comments in FCC docket 13-115 take aim at AFTRCC. Only that &quot;advocacy group&quot; and its legacy members, SpaceX says, oppose &quot;more efficient and s…</description>
+    </item>
+    <item>
+      <title>Relativity Space asks the FCC to consider co-primary spectrum status for commercial launch</title>
+      <link>https://spacequotes.org/tidbits/relativity-launch-spectrum-13-115/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/relativity-launch-spectrum-13-115/</guid>
+      <pubDate>Fri, 25 Sep 2026 09:00:00 GMT</pubDate>
+      <description>In reply comments filed September 25 in FCC docket 13-115, Relativity Space says flight test and space launch telemetry are, in nearly every respect the Aero…</description>
+    </item>
+    <item>
+      <title>Cowboy Space, which plans to fly its satellites on its own rockets, asks the FCC to open a rulemaking on launch spectrum</title>
+      <link>https://spacequotes.org/tidbits/cowboy-space-launch-spectrum-13-115/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/cowboy-space-launch-spectrum-13-115/</guid>
+      <pubDate>Mon, 14 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Cowboy Space Corp. calls itself &quot;a future launch operator and satellite constellation licensee,&quot; and its comment in FCC docket 13-115 explains why reliable a…</description>
+    </item>
+    <item>
+      <title>Muon Space tells the FCC that AT&amp;T, CTIA, and SiriusXM have the spectrum-sharing law wrong</title>
+      <link>https://spacequotes.org/tidbits/muon-space-ttc-26-54/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/muon-space-ttc-26-54/</guid>
+      <pubDate>Wed, 09 Sep 2026 09:00:00 GMT</pubDate>
+      <description>The FCC's &quot;Spectrum Abundance for Weird Space Stuff&quot; proceeding has drawn an ex parte letter from Muon Space, which says it is correcting &quot;material mischarac…</description>
+    </item>
+    <item>
+      <title>EchoStar asks the FCC to reverse an order excluding its own claims from a $2.4 billion trust</title>
+      <link>https://spacequotes.org/tidbits/echostar-afr-25-302/</link>
+      <guid isPermaLink="true">https://spacequotes.org/tidbits/echostar-afr-25-302/</guid>
+      <pubDate>Tue, 01 Sep 2026 09:00:00 GMT</pubDate>
+      <description>EchoStar wants the Federal Communications Commission to undo a Bureau order that narrows who can collect from a $2.4 billion trust. EchoStar funded the trust…</description>
+    </item>
     <item>
       <title>SpaceX tells FCC that zero of Viasat's 657 proposed reference links pass the screening criteria</title>
       <link>https://spacequotes.org/tidbits/space-exploration-holdings-llc-25-157/</link>

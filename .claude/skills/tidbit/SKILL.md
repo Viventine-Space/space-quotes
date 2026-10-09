@@ -95,8 +95,13 @@ epigraph and metaphor bridge except concrete claims; scrutinize the "Why it matt
 hardest; confirm counts match a complete tally (`counts_complete: true`); default to
 UNSUPPORTED on doubt; return JSON `{claims[], unsupported_count, verdict: PASS|FAIL, notes}`.
 
+**Two models required.** Run this check with at least two different Anthropic frontier models
+(set the Agent `model`, e.g. one `opus` and one `fable`), each a fresh subagent with the same
+three inputs and no sight of the other's verdict. The tidbit passes only when every model
+returns PASS on the final draft. Any wording change after a PASS needs a fresh check from both.
+
 - **FAIL** → fix exactly the flagged claims (reword to match source, or drop them) and
-  re-verify with a fresh subagent. Max 2 revision rounds.
+  re-verify with fresh subagents. Max 2 revision rounds.
 - Still FAIL after 2 rounds → do NOT present as ready. Surface the unsupported claims to the
   user and stop.
 
@@ -111,5 +116,5 @@ table, and the candidate's source link. State clearly it is **ready for review, 
 - Never use a `summary_only_claims` specific without primary-text confirmation.
 - Never invent, reattribute, or alter a quote. The pull-quote must appear verbatim in
   `out/<slug>/source.txt` and be attributed to whoever wrote it in the filing.
-- Never skip step 5. A tidbit that has not passed independent verification is not done.
+- Never skip step 5. A tidbit that has not passed independent verification by two models is not done.
 - Never publish or edit the live site from this skill.
