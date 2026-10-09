@@ -31,6 +31,14 @@ ranked `shortlist`. Show the user the shortlist (applicant, filing type, docket,
 shortlist entry. If `candidate` is null, tell the user nothing met the bar and suggest another
 docket/topic — **do NOT lower the bar or invent a subject.**
 
+**Search priority.** Search Console shows people find the site by searching exact filing
+identifiers (IBFS file numbers like `SAT-LOA-20260202-00073`, docket numbers). When choosing
+between candidates that both pass the gate, prefer one with a file number or an active docket
+that already has a hub, and avoid a second tidbit that only repeats an angle already published.
+Always put the identifier in `source_label` in the standard form
+(`FCC ECFS · SB Docket 25-157 · Letter`, `FCC IBFS · SAT-LOA-… · License application`), because
+the page title, meta description and docket hub are all built from it.
+
 ### 2. Build the fact sheet (deterministic, no LLM)
 `node tools/build-factsheet.mjs <filing_id> <slug>` (use the candidate's `filing_id` and
 `slug`). This writes `out/<slug>/factsheet.json`, downloads the primary PDF, and extracts its
