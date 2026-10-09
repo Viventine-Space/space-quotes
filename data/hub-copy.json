@@ -1,0 +1,104 @@
+{
+  "_comment": "Hand-written titles and intros for topic and docket hubs. Every claim must come from the tidbits listed on that hub (or the docket caption), and changes need the same two-model verification as tidbits.",
+  "topics": {
+    "orbital-datacenter": {
+      "title": "Orbital data centers: FCC filings and license applications",
+      "h1": "Orbital data centers",
+      "intro": "FCC filings from companies that want to compute in orbit: Starcloud's license application for a data center in orbit for training AI, Aethero's satellite that does its computing in orbit, and Cowboy Space's Stampede system of in-orbit data centers. Each tidbit quotes the filing and links to the primary source."
+    },
+    "in-space-computing": {
+      "title": "In-space computing: FCC license applications",
+      "h1": "In-space computing",
+      "intro": "FCC license applications for computing in orbit: Starcloud wants to put a data center in orbit for training AI, and Aethero wants to launch a satellite that does its computing in orbit instead of on the ground."
+    },
+    "fcc": {
+      "title": "FCC space filings: sourced tidbits from satellite and spectrum proceedings",
+      "h1": "FCC space filings",
+      "intro": "Space Quotes tidbits drawn from FCC filings: license applications, comments, oppositions, ex parte letters and applications for review. Each one quotes the filer verbatim and links to the original document."
+    },
+    "spectrum": {
+      "title": "Satellite spectrum disputes at the FCC",
+      "h1": "Spectrum",
+      "intro": "Filings over who gets which spectrum: Amazon on opening the 17 GHz band for satellite broadband and on Ka-band sharing rules, rural carriers objecting to satellites beaming over their spectrum without permission, a radio educator asking to keep AST SpaceMobile out of the 430-440 MHz ham band, and SpaceX opposing EchoStar's appeal of its direct-to-cell waiver."
+    },
+    "spacex": {
+      "title": "SpaceX at the FCC: filings, replies and oppositions",
+      "h1": "SpaceX",
+      "intro": "SpaceX's filings and the disputes around them: its reply on Viasat's GSO reference links, its call to replace launch-spectrum coordinating committees with an automated scheduling system, and its opposition to EchoStar's appeal of its direct-to-cell waiver. Also here: Astranis answering SpaceX's numbers on its reference links, and EchoStar's application for review in GN Docket 25-302."
+    },
+    "spectrum-sharing": {
+      "title": "Satellite spectrum sharing: FCC filings",
+      "h1": "Spectrum sharing",
+      "intro": "How operators want spectrum shared: Amazon and SpaceX in the FCC's proceeding on modernizing spectrum sharing for satellite broadband, Muon Space disputing claims by AT&T, CTIA and SiriusXM that the FCC cannot authorize others to share their licensed bands, and Sateliot asking the full FCC to overturn the dismissal of its satellite-IoT petition."
+    },
+    "orbital-debris": {
+      "title": "Orbital debris and deorbit plans: FCC filings",
+      "h1": "Orbital debris",
+      "intro": "Filings on keeping orbit usable: AST SpaceMobile on how it will steer its large satellites back down, Iridium joining SpaceX and Kuiper in asking for a firm threshold for accidental satellite explosions, and Planet Labs on faster satellite licensing."
+    },
+    "ngso": {
+      "title": "NGSO satellite systems: FCC filings",
+      "h1": "NGSO",
+      "intro": "Filings on non-geostationary (NGSO) satellite systems: Amazon on opening the 17 GHz band for satellite broadband and on Ka-band sharing rules, and Starcloud's license application for a data center in orbit."
+    },
+    "launch-spectrum": {
+      "title": "Launch spectrum: FCC Docket 13-115 filings from SpaceX, Relativity and Cowboy Space",
+      "h1": "Launch spectrum",
+      "intro": "Filings in FCC Docket 13-115 on spectrum for space launch: SpaceX asks the FCC to replace third-party coordinating committees with an automated scheduling system, Relativity Space asks the FCC to consider co-primary status for commercial launch, and Cowboy Space asks the FCC to open a rulemaking."
+    },
+    "direct-to-cell": {
+      "title": "Direct-to-cell satellite service: FCC filings",
+      "h1": "Direct-to-cell",
+      "intro": "Filings on direct-to-cell service: rural carriers asking the FCC not to let satellites beam over their spectrum without permission, SpaceX asking the FCC to throw out EchoStar's appeal of its direct-to-cell waiver, and AST SpaceMobile on how it will steer its large satellites back down."
+    },
+    "ttc": {
+      "title": "TT&C spectrum: FCC filings on telemetry, tracking and command",
+      "h1": "TT&C",
+      "intro": "Filings on telemetry, tracking and command (TT&C): Muon Space backing new secondary uplink allocations for TT&C, and Cowboy Space on using FCC-licensed spectrum for TT&C of its rockets."
+    },
+    "supplemental-coverage-from-space": {
+      "title": "Supplemental Coverage from Space (SCS): FCC filings",
+      "h1": "Supplemental Coverage from Space",
+      "intro": "Filings in the FCC's Supplemental Coverage from Space proceedings: rural carriers opposing satellites beaming over their spectrum without permission in Docket 25-201, and SpaceX asking the FCC to throw out EchoStar's appeal in Docket 23-135."
+    },
+    "kuiper": {
+      "title": "Amazon Kuiper at the FCC: spectrum filings",
+      "h1": "Kuiper",
+      "intro": "Amazon's filings on satellite spectrum: urging the FCC to open the 17 GHz band for satellite broadband, and asking for modern GSO reference links for sharing Ka-band spectrum, arguing the current ones date to an era when its use was 'still in its infancy'."
+    },
+    "gso-reference-links": {
+      "title": "GSO reference links: FCC Docket 25-157 filings",
+      "h1": "GSO reference links",
+      "intro": "The dispute over GSO reference links in FCC Docket 25-157: SpaceX says zero of Viasat's 657 proposed reference links pass the screening criteria, and Astranis says it could not reproduce SpaceX's numbers on two of its own links."
+    },
+    "echostar": {
+      "title": "EchoStar at the FCC: filings and appeals",
+      "h1": "EchoStar",
+      "intro": "EchoStar at the FCC: its application for review of an order excluding its own claims from a $2.4 billion trust, and SpaceX's opposition to EchoStar's appeal of SpaceX's direct-to-cell waiver."
+    },
+    "ast-spacemobile": {
+      "title": "AST SpaceMobile at the FCC: Docket 25-201 filings",
+      "h1": "AST SpaceMobile",
+      "intro": "Filings on AST SpaceMobile in FCC Docket 25-201: how it will steer its large satellites back down, and a radio educator asking the FCC to keep it out of the 430-440 MHz ham band."
+    },
+    "aftrcc": {
+      "title": "AFTRCC and launch spectrum coordination: FCC filings",
+      "h1": "AFTRCC",
+      "intro": "Filings about the Aerospace and Flight Test Radio Coordinating Council (AFTRCC) in FCC Docket 13-115: SpaceX asks the FCC to replace third-party coordinating committees with an automated scheduling system, and Relativity Space argues flight test and launch telemetry are, in nearly every respect AFTRCC identifies as relevant to spectrum priority, the same type of operation."
+    }
+  },
+  "dockets": {
+    "13-115": {
+      "intro": "ET Docket 13-115 is the FCC proceeding on ensuring reliable access to spectrum for space launch activities. Tidbits from the September 2026 filings of SpaceX, Relativity Space and Cowboy Space, each built around a verbatim line from the filing."
+    },
+    "25-157": {
+      "intro": "SB Docket 25-157 is the FCC proceeding on modernizing spectrum sharing for satellite broadband. Tidbits from filings by Amazon, SpaceX and Astranis, including the dispute over GSO reference links."
+    },
+    "25-201": {
+      "intro": "SB Docket 25-201 covers applications of AST & Science, AT&T, Verizon and FirstNet requesting Supplemental Coverage from Space authorization. Tidbits from AST SpaceMobile's deorbit plan and from oppositions by rural carriers and a radio educator."
+    },
+    "23-135": {
+      "intro": "GN Docket 23-135 is the FCC proceeding on filings of SpaceX and T-Mobile requesting to establish Supplemental Coverage from Space. Tidbits from SpaceX's opposition to EchoStar's appeal and Sateliot's application for review."
+    }
+  }
+}

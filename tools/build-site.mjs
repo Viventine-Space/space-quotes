@@ -58,9 +58,25 @@ const TAG_LABELS = {
   fcc: "FCC", itu: "ITU", faa: "FAA", ngso: "NGSO", gso: "GSO", "ka-band": "Ka-band",
   "direct-to-cell": "Direct-to-cell", "ast-spacemobile": "AST SpaceMobile",
   "supplemental-coverage-from-space": "Supplemental Coverage from Space",
+  spacex: "SpaceX", echostar: "EchoStar", ttc: "TT&C", aftrcc: "AFTRCC", ai: "AI",
+  "gso-reference-links": "GSO Reference Links", "orbital-datacenter": "Orbital Data Centers",
+  "in-space-computing": "In-Space Computing", "planet-labs": "Planet Labs",
 };
 const humanizeTag = (t) => TAG_LABELS[t] || t.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 const docketLabel = (d) => DOCKET_LABELS[d] || `FCC Docket ${d}`;
+// "docket-13-115"-style tags duplicate the docket hub; they never get their own topic page.
+const tagDocket = (t) => (t.match(/^docket-(\d{2}-\d{2,3})$/) || [])[1] || null;
+
+// Hand-written hub titles + intros (verified against the tidbits they describe).
+const HUB_COPY = JSON.parse(readFileSync(join(ROOT, "data", "hub-copy.json"), "utf8"));
+// Every hub URL ever published. A hub that falls below HUB_MIN keeps a page (noindex) instead
+// of turning into a 404 that Search Console reports against the site.
+const HUBS_LEDGER_PATH = join(ROOT, "data", "hubs-published.json");
+const HUBS_LEDGER = JSON.parse(readFileSync(HUBS_LEDGER_PATH, "utf8"));
+
+// Searchable identifiers: IBFS file numbers (SAT-LOA-20260202-00073) and ECFS dockets.
+const fileNumber = (fm) => (String(fm.source_label || "").match(/\b([A-Z]{3}-[A-Z]{3,4}-\d{8}-\d{5})\b/) || [])[1] || null;
+const longDate = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const escAttr = (s) => esc(s).replace(/'/g, "&#39;");
@@ -90,7 +106,7 @@ function parse(md) {
     else if (a && pendingQ) { faq.push({ q: pendingQ, a: a[1].trim() }); pendingQ = null; }
   }
   const body = m[2].replace(/<!--[\s\S]*?-->/g, "").trim();
-  const docket = (fm.source_label && (fm.source_label.match(/Docket\s+([0-9-]+)/) || [])[1]) || null;
+  const docket = (fm.source_label && (fm.source_label.match(/(?:Docket\s+|^FCC\s*·\s*)(\d{2}-\d{2,3})\b/) || [])[1]) || null;
   // Last-modified comes from an optional `updated:` frontmatter date, never the file mtime
   // (git does not preserve mtimes, so a fresh clone would restamp every article).
   const modified = `${fm.updated || fm.date}T09:00:00Z`;
@@ -134,10 +150,24 @@ function bodyToHtml(body) {
   return out.join("\n");
 }
 
-function metaDescription(body) {
-  const first = body.split(/\n\s*\n/).find((b) => !b.startsWith(">")) || "";
-  const txt = first.replace(/\n/g, " ").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[*_>#]/g, "").trim();
-  return txt.length > 157 ? txt.slice(0, 154) + "…" : txt;
+// Built only from verified fields (title, source label, filing date) unless the tidbit sets
+// its own `description:`. Names the file number or docket, which is what people search for.
+function metaDescription(fm, docket) {
+  if (fm.description) return fm.description;
+  const kind = String(fm.source_label || "").split("·").pop().trim();
+  const kindText = kind === kind.toUpperCase() ? kind[0] + kind.slice(1).toLowerCase() : kind;
+  const id = fileNumber(fm);
+  const where = id ? `FCC file ${id}` : docket ? `FCC Docket ${docket}` : "the FCC record";
+  const base = `${fm.title.replace(/[.?!]$/, "")}. ${kindText} in ${where}, filed ${longDate(fm.date)}`;
+  const full = `${base}, with the verbatim quote and primary source.`;
+  return full.length <= 165 ? full : `${base}.`;
+}
+
+function titleTag(fm, docket) {
+  const id = fileNumber(fm);
+  if (id) return `${id}: ${fm.title}`;
+  if (docket) return `${fm.title} | FCC Docket ${docket}`;
+  return `${fm.title} — Space Quotes`;
 }
 function teaser(body) {
   const first = body.split(/\n\s*\n/).find((b) => !b.startsWith(">")) || "";
@@ -268,7 +298,7 @@ function page(fm, bodyHtml, pull, ogImage, desc, modified, related, docket, faq 
   const faqLd = faq.length
     ? [{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }]
     : [];
-  const tags = Array.isArray(fm.tags) ? fm.tags : fm.tags ? [fm.tags] : [];
+  const tags = (Array.isArray(fm.tags) ? fm.tags : fm.tags ? [fm.tags] : []).filter((t) => !tagDocket(t));
   const filedHtml =
     docket || tags.length
       ? `<div class="filed"><span>Filed under</span>${docket ? chip(`Docket ${esc(docket)}`, PROMOTED_DOCKETS.has(docket) ? `/dockets/${docket}/` : null) : ""}${tags
@@ -305,7 +335,7 @@ function page(fm, bodyHtml, pull, ogImage, desc, modified, related, docket, faq 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(fm.title)} — Space Quotes</title>
+<title>${esc(titleTag(fm, docket))}</title>
 <meta name="description" content="${escAttr(desc)}">
 <link rel="canonical" href="${url}">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -394,7 +424,7 @@ ${BUILT_ON}
 }
 
 // ---------- shared listing renderer (feed + hubs + hub indexes) ----------
-function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, extraLd = [] }) {
+function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, extraLd = [], indexable = true }) {
   const crumbNav = crumbs.map((c, i) => (i === 0 ? `<a href="${c.url}">${esc(c.name)}</a>` : ` &nbsp;/&nbsp; ${c.url ? `<a href="${c.url}">${esc(c.name)}</a>` : esc(c.name)}`)).join("");
   const breadcrumb = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
@@ -408,7 +438,7 @@ function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, ex
 <title>${esc(titleTag)}</title>
 <meta name="description" content="${escAttr(desc)}">
 <link rel="canonical" href="${canonical}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="${indexable ? "index, follow, max-image-preview:large" : "noindex, follow"}">
 <meta property="og:site_name" content="Space Quotes">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonical}">
@@ -470,29 +500,47 @@ function feedPage(items) {
   });
 }
 
-function topicHub(slug, label, its) {
-  const desc = `Space Quotes tidbits on ${label}, sourced from real FCC, ITU and FAA filings, each built around a real line from the filing.`;
+function topicHub(slug, label, its, indexable = true) {
+  const copy = HUB_COPY.topics[slug] || {};
+  const desc = copy.intro || `Space Quotes tidbits on ${label}, sourced from real FCC, ITU and FAA filings, each built around a real line from the filing.`;
   return listingPage({
-    titleTag: `${label} — space-policy tidbits | Space Quotes`,
-    desc, canonical: `${SITE}/topics/${slug}/`, h1: label,
-    lede: `Verified, primary-sourced tidbits tagged “${label}.”`,
+    titleTag: copy.title ? `${copy.title} | Space Quotes` : `${label}: FCC filings and space-policy tidbits | Space Quotes`,
+    desc, canonical: `${SITE}/topics/${slug}/`, h1: copy.h1 || label, indexable,
+    lede: copy.intro || `Verified, primary-sourced tidbits tagged “${label}.”`,
     crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Topics", url: "/topics/" }, { name: label, url: `/topics/${slug}/` }],
     rowsHtml: its.map(tidbitRow).join("\n"),
     extraLd: [itemListLd(its)],
   });
 }
 
-function docketHub(docket, its) {
+function docketHub(docket, its, indexable = true) {
   const label = docketLabel(docket);
-  const desc = `Every Space Quotes tidbit from FCC docket ${docket} — ${label}. Sourced from primary filings.`;
+  const copy = HUB_COPY.dockets[docket] || {};
+  const desc = copy.intro || `Every Space Quotes tidbit from FCC docket ${docket}, ${label}. Sourced from primary filings.`;
   return listingPage({
-    titleTag: `FCC Docket ${docket} — ${label} | Space Quotes`,
-    desc, canonical: `${SITE}/dockets/${docket}/`, h1: `Docket ${docket}`,
-    lede: `${label}. Verified tidbits drawn from filings in this FCC proceeding.`,
+    titleTag: `FCC Docket ${docket}: ${label} | Space Quotes`,
+    desc, canonical: `${SITE}/dockets/${docket}/`, h1: `Docket ${docket}: ${label}`, indexable,
+    lede: copy.intro || `${label}. Verified tidbits drawn from filings in this FCC proceeding.`,
     crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Dockets", url: "/dockets/" }, { name: `Docket ${docket}`, url: `/dockets/${docket}/` }],
     rowsHtml: its.map(tidbitRow).join("\n"),
     extraLd: [itemListLd(its)],
   });
+}
+
+// A retired hub URL: send visitors (and Google) to its replacement instead of a 404.
+function redirectStub(target) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Moved | Space Quotes</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="${SITE}${target}">
+<meta http-equiv="refresh" content="0; url=${target}">
+</head>
+<body><p>This page moved to <a href="${target}">${SITE}${target}</a>.</p></body>
+</html>
+`;
 }
 
 function hubIndex(kind, entries) {
@@ -895,13 +943,14 @@ ${entries}
 `;
 }
 
-function sitemap(items, hubPaths = []) {
-  const today = new Date().toISOString().slice(0, 10);
+// lastmod comes from content dates, never the build date, so it only moves when a page changes.
+function sitemap(items, pages = []) {
+  const newest = items.map((it) => it.modified.slice(0, 10)).sort().pop();
   const urls = [
-    { loc: `${SITE}/`, pri: "1.0", freq: "daily", lastmod: today },
-    { loc: `${SITE}/tidbits/`, pri: "0.9", freq: "daily", lastmod: today },
-    ...hubPaths.map((p) => ({ loc: `${SITE}${p}`, pri: "0.7", freq: "weekly", lastmod: today })),
-    ...items.map((it) => ({ loc: `${SITE}/tidbits/${it.fm.slug}/`, pri: "0.8", freq: "monthly", lastmod: it.fm.date })),
+    { loc: `${SITE}/`, pri: "1.0", freq: "daily", lastmod: newest },
+    { loc: `${SITE}/tidbits/`, pri: "0.9", freq: "daily", lastmod: newest },
+    ...pages.map((p) => ({ loc: `${SITE}${p.path}`, pri: "0.7", freq: "weekly", lastmod: p.lastmod })),
+    ...items.map((it) => ({ loc: `${SITE}/tidbits/${it.fm.slug}/`, pri: "0.8", freq: "monthly", lastmod: it.modified.slice(0, 10) })),
   ];
   const body = urls
     .map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`)
@@ -923,7 +972,7 @@ const items = readdirSync(CONTENT)
 const byTag = {};
 const byDocket = {};
 for (const it of items) {
-  for (const t of Array.isArray(it.fm.tags) ? it.fm.tags : it.fm.tags ? [it.fm.tags] : []) (byTag[t] ||= []).push(it);
+  for (const t of Array.isArray(it.fm.tags) ? it.fm.tags : it.fm.tags ? [it.fm.tags] : []) if (!tagDocket(t)) (byTag[t] ||= []).push(it);
   if (it.docket) (byDocket[it.docket] ||= []).push(it);
 }
 // A hub is "promoted" (gets its own page + inbound links) only at HUB_MIN+ tidbits.
@@ -939,7 +988,7 @@ const relatedFor = (it) => {
 ogHome();
 for (const it of items) {
   const ogImage = ogCard(it.fm.slug, it.fm, it.pull);
-  const desc = metaDescription(it.body);
+  const desc = metaDescription(it.fm, it.docket);
   const html = page(it.fm, bodyToHtml(it.body), it.pull, ogImage, desc, it.modified, relatedFor(it), it.docket, it.faq);
   const dir = join(ROOT, "tidbits", it.fm.slug);
   mkdirSync(dir, { recursive: true });
@@ -949,25 +998,39 @@ for (const it of items) {
 
 // ---- hub-and-spoke: topic + docket hubs (only promoted ones) and their indexes ----
 const hubUrls = [];
-const writeHub = (dir, slug, html) => {
+const lastmodOf = (its) => its.map((it) => it.modified.slice(0, 10)).sort().pop();
+const writeHub = (dir, slug, html, its) => {
   const d = join(ROOT, dir, slug);
   mkdirSync(d, { recursive: true });
   writeFileSync(join(d, "index.html"), html);
-  hubUrls.push(`/${dir}/${slug}/`);
+  if (its) hubUrls.push({ path: `/${dir}/${slug}/`, lastmod: lastmodOf(its) });
 };
-// Remove any previously-generated hub dirs that no longer qualify (kills stale thin pages).
-const pruneHubs = (dir, keep) => {
+// Promoted hubs are indexable. A hub that was published once but has dropped below HUB_MIN
+// keeps a noindex page; one with no tidbits left (or a docket-* tag) redirects instead.
+const keptHubs = { topics: new Set(), dockets: new Set() };
+for (const tag of new Set([...PROMOTED_TAGS, ...HUBS_LEDGER.topics])) {
+  const its = byTag[tag] || [];
+  const dk = tagDocket(tag);
+  if (dk) writeHub("topics", tag, redirectStub(PROMOTED_DOCKETS.has(dk) ? `/dockets/${dk}/` : "/topics/"));
+  else if (its.length >= HUB_MIN) writeHub("topics", tag, topicHub(tag, humanizeTag(tag), its), its);
+  else if (its.length) writeHub("topics", tag, topicHub(tag, humanizeTag(tag), its, false));
+  else writeHub("topics", tag, redirectStub("/topics/"));
+  keptHubs.topics.add(tag);
+}
+for (const dk of new Set([...PROMOTED_DOCKETS, ...HUBS_LEDGER.dockets])) {
+  const its = byDocket[dk] || [];
+  if (its.length >= HUB_MIN) writeHub("dockets", dk, docketHub(dk, its), its);
+  else if (its.length) writeHub("dockets", dk, docketHub(dk, its, false));
+  else writeHub("dockets", dk, redirectStub("/dockets/"));
+  keptHubs.dockets.add(dk);
+}
+// Remove hub dirs that were never published (e.g. a local experiment).
+for (const dir of ["topics", "dockets"]) {
   const base = join(ROOT, dir);
-  if (!existsSync(base)) return;
-  for (const name of readdirSync(base)) {
-    if (name === "index.html") continue;
-    if (!keep.has(name)) rmSync(join(base, name), { recursive: true, force: true });
-  }
-};
-for (const [tag, its] of Object.entries(byTag)) if (its.length >= HUB_MIN) writeHub("topics", tag, topicHub(tag, humanizeTag(tag), its));
-for (const [dk, its] of Object.entries(byDocket)) if (its.length >= HUB_MIN) writeHub("dockets", dk, docketHub(dk, its));
-pruneHubs("topics", PROMOTED_TAGS);
-pruneHubs("dockets", PROMOTED_DOCKETS);
+  if (!existsSync(base)) continue;
+  for (const name of readdirSync(base)) if (name !== "index.html" && !keptHubs[dir].has(name)) rmSync(join(base, name), { recursive: true, force: true });
+}
+writeFileSync(HUBS_LEDGER_PATH, JSON.stringify({ ...HUBS_LEDGER, topics: [...keptHubs.topics].sort(), dockets: [...keptHubs.dockets].sort() }, null, 2) + "\n");
 
 const topicEntries = Object.entries(byTag).filter(([, its]) => its.length >= HUB_MIN).map(([slug, its]) => ({ slug, label: humanizeTag(slug), n: its.length })).sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
 const docketEntries = Object.entries(byDocket).filter(([, its]) => its.length >= HUB_MIN).map(([slug, its]) => ({ slug, label: `Docket ${slug}`, sub: docketLabel(slug), n: its.length })).sort((a, b) => b.n - a.n || a.slug.localeCompare(b.slug));
@@ -985,5 +1048,6 @@ mkdirSync(join(ROOT, "terms"), { recursive: true });
 writeFileSync(join(ROOT, "terms", "index.html"), termsPage());
 writeFileSync(join(ROOT, "index.html"), homePage(items, topicEntries, docketEntries));
 writeFileSync(join(ROOT, "feed.xml"), feedXml(items));
-writeFileSync(join(ROOT, "sitemap.xml"), sitemap(items, ["/about/", "/terms/", ...hubIndexUrls, ...hubUrls]));
+const newest = lastmodOf(items);
+writeFileSync(join(ROOT, "sitemap.xml"), sitemap(items, [...["/about/", "/terms/"].map((path) => ({ path, lastmod: newest })), ...hubIndexUrls.map((path) => ({ path, lastmod: newest })), ...hubUrls]));
 console.log(`built homepage + ${items.length} tidbit(s) + ${PROMOTED_TAGS.size} topic + ${PROMOTED_DOCKETS.size} docket hubs (gated at ${HUB_MIN}+) + feed + RSS + sitemap`);
