@@ -18,23 +18,58 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://spacequotes.org";
 const CONTENT = join(ROOT, "content", "tidbits");
 
-// All outbound links to the company site live behind these constants, so the Orbit Sentinel
-// launch is a one-line change. ORBIT_SENTINEL points at the root today; flip it to the dedicated
-// landing page (e.g. `${VIVENTINE}/orbit-sentinel`) on launch day and rebuild.
-const VIVENTINE = "https://viventine.com";
-const ORBIT_SENTINEL = VIVENTINE; // ← flip on launch
-const BETA = "https://console.viventine.com";
-const sentinelUrl = (content, medium = "referral") =>
-  `${ORBIT_SENTINEL}?utm_source=spacequotes&utm_medium=${medium}&utm_campaign=orbit_sentinel&utm_content=${content}`;
-const betaUrl = (content) =>
-  `${BETA}?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=${content}`;
+// All outbound links to the company site carry UTM tags on the scheme shared across Viventine
+// sites: source = site, medium = referral, campaign = orbit_sentinel, content = page-placement.
+const VIVENTINE = "https://www.viventine.com/";
+const ORBIT_SENTINEL = "https://www.viventine.com/orbit-sentinel/";
+const BETA = "https://console.viventine.com/sign-in/";
+function utm(base, page, placement) {
+  const u = new URL(base);
+  u.searchParams.set("utm_source", "spacequotes");
+  u.searchParams.set("utm_medium", "referral");
+  u.searchParams.set("utm_campaign", "orbit_sentinel");
+  u.searchParams.set("utm_content", `${page}-${placement}`);
+  return esc(u.href);
+}
+const sentinelUrl = (page, placement) => utm(ORBIT_SENTINEL, page, placement);
+const betaUrl = (page, placement) => utm(BETA, page, placement);
+const vivUrl = (page, placement) => utm(VIVENTINE, page, placement);
+
+// Google Consent Mode v2 + GTM, matching spacebench.net: everything denied until the visitor
+// accepts the banner; GTM loads when the browser is idle and GA4 is configured in the container.
+const GTM_ID = "GTM-PK28J8XD";
+const ANALYTICS_HEAD = `<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied"});
+try{if(localStorage.getItem("analytics-consent")==="granted")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}
+</script>
+<script>
+(window.requestIdleCallback||setTimeout)(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","${GTM_ID}")})
+</script>`;
+const COOKIE_LINK = `<button type="button" id="cookie-settings" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">Cookie settings</button>`;
+const COOKIE_BANNER = `<div id="cookie-banner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:#10121c;border-top:1px solid rgba(120,150,255,.18);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5">
+<div style="max-width:980px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<p style="margin:0;color:#aebbe6">We'd like to set Google Analytics cookies to understand how this site is used. Nothing is set unless you accept.</p>
+<div style="display:flex;gap:8px"><button type="button" id="cookie-decline" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(120,150,255,.3);background:none;color:#eef1fa;font:inherit;cursor:pointer">Decline</button><button type="button" id="cookie-accept" style="padding:6px 14px;border-radius:6px;border:0;background:#6f9bff;color:#0a0a0f;font:inherit;font-weight:600;cursor:pointer">Accept</button></div>
+</div></div>
+<script>
+(function(){
+  var b=document.getElementById("cookie-banner");
+  function set(v){try{localStorage.setItem("analytics-consent",v)}catch(e){}gtag("consent","update",{analytics_storage:v});b.style.display="none"}
+  var c=null;try{c=localStorage.getItem("analytics-consent")}catch(e){}
+  if(!c)b.style.display="block";
+  document.getElementById("cookie-accept").addEventListener("click",function(){set("granted")});
+  document.getElementById("cookie-decline").addEventListener("click",function(){set("denied")});
+  var s=document.getElementById("cookie-settings");if(s)s.addEventListener("click",function(){b.style.display="block"});
+})();
+</script>`;
 
 // Only generate a topic/docket hub once it has at least this many tidbits (avoids thin pages).
 const HUB_MIN = 2;
 let PROMOTED_TAGS = new Set();
 let PROMOTED_DOCKETS = new Set();
 
-const SAME_AS = ["https://www.linkedin.com/in/acaracappa/", "https://github.com/acaracappa", VIVENTINE];
+const SAME_AS = ["https://www.linkedin.com/in/acaracappa/", "https://github.com/acaracappa", "https://viventine.com"];
 const AUTHOR = {
   "@type": "Person",
   name: "Anthony Caracappa",
@@ -46,7 +81,7 @@ const AUTHOR_NAME = "Anthony Caracappa";
 
 // Subtle, self-contained "what this runs on" note. Tells the story and gives readers a path
 // to explore or try the free beta, without a banner or hard sell.
-const BUILT_ON = `<aside style="max-width:680px;margin:46px auto 0;padding:16px 20px;border:1px solid rgba(120,150,255,.18);border-radius:14px;background:rgba(91,140,255,.05);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.65;color:#9fb0e0">Space Quotes is built on <a href="${sentinelUrl('footer')}" style="color:#9fbcff;text-decoration:none">Orbit Sentinel</a>, a space-regulatory data platform that tracks filings across the FCC, ITU, FAA and more.</aside>`;
+const builtOn = (page) => `<aside style="max-width:680px;margin:46px auto 0;padding:16px 20px;border:1px solid rgba(120,150,255,.18);border-radius:14px;background:rgba(91,140,255,.05);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.65;color:#9fb0e0">Space Quotes is built on <a href="${sentinelUrl(page, 'built_on')}" style="color:#9fbcff;text-decoration:none">Orbit Sentinel</a>, a space-regulatory data platform that tracks filings across the FCC, ITU, FAA and more.</aside>`;
 
 // Tidbits now use verbatim quotes pulled from the filings themselves (see memory:
 // content-direction-v2). The famous-quote library is retired from tidbits.
@@ -399,6 +434,7 @@ h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5.2vw,44px);line-he
 .related a:hover .t{color:var(--accent)}
 footer{margin-top:48px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+${ANALYTICS_HEAD}
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -415,9 +451,10 @@ ${filedHtml}
 </article>
 ${faqHtml}
 ${relHtml}
-${BUILT_ON}
-<footer>Written by <a rel="author" href="${AUTHOR.url}">${esc(AUTHOR_NAME)}</a> · a <a href="/tidbits/">Space Quotes tidbit</a>, the quotable lines from real space-regulatory filings. <a href="/about/">How we source &amp; verify</a></footer>
+${builtOn('tidbit')}
+<footer>Written by <a rel="author" href="${AUTHOR.url}">${esc(AUTHOR_NAME)}</a> · a <a href="/tidbits/">Space Quotes tidbit</a>, the quotable lines from real space-regulatory filings. <a href="/about/">How we source &amp; verify</a> · ${COOKIE_LINK}</footer>
 </div>
+${COOKIE_BANNER}
 </body>
 </html>
 `;
@@ -468,6 +505,7 @@ li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 li a:hover .t{color:var(--accent)}
 .count{color:var(--dim);font-weight:400;font-size:.6em;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 </style>
+${ANALYTICS_HEAD}
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -478,8 +516,10 @@ li a:hover .t{color:var(--accent)}
 <ul>
 ${rowsHtml}
 </ul>
-${BUILT_ON}
+${builtOn('listing')}
+<p style="max-width:680px;margin:18px auto 0;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;color:#9aa6cf">${COOKIE_LINK}</p>
 </div>
+${COOKIE_BANNER}
 </body>
 </html>
 `;
@@ -675,6 +715,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
 }
 @media (prefers-reduced-motion:reduce){.btn:hover,.card:hover,.feat:hover{transform:none}}
 </style>
+${ANALYTICS_HEAD}
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -730,12 +771,12 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
     </div>
   </section>
 
-  ${BUILT_ON}
+  ${builtOn('home')}
 </main>
 
 <footer><div class="shell foot">
   <div>✦ Space Quotes — the paperwork of leaving Earth, read between the lines.</div>
-  <div><a href="/tidbits/">Tidbits</a> · <a href="/topics/">Topics</a> · <a href="/dockets/">Dockets</a> · <a href="/about/">About</a> · <a href="/terms/">Terms</a> · <a href="/feed.xml">RSS</a> · <a href="/sitemap.xml">Sitemap</a> · spacequotes.org</div>
+  <div><a href="/tidbits/">Tidbits</a> · <a href="/topics/">Topics</a> · <a href="/dockets/">Dockets</a> · <a href="/about/">About</a> · <a href="/terms/">Terms</a> · <a href="/feed.xml">RSS</a> · <a href="/sitemap.xml">Sitemap</a> · ${COOKIE_LINK} · spacequotes.org</div>
 </div></footer>
 
 <script>
@@ -748,6 +789,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(120,150,255,.1);mar
   setInterval(show,7000);
 })();
 </script>
+${COOKIE_BANNER}
 </body>
 </html>
 `;
@@ -799,6 +841,7 @@ strong{color:#fff}
 .principle{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+${ANALYTICS_HEAD}
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -808,7 +851,7 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p class="lede">Space Quotes turns the dense public record of space regulation into short, sourced, shareable dispatches, each built around a real line pulled from the filing itself.</p>
 
 <h2>Where the facts come from</h2>
-<p>Every tidbit is built from <strong>primary filings in the public regulatory record</strong>: the FCC (ECFS and IBFS), the ITU, the FAA, and the dockets where the future of orbit is actually argued. We surface them through <a href="${sentinelUrl('about_methodology')}">Orbit Sentinel</a>, our space-regulatory data platform, which crawls and links these sources, and every tidbit links back to the original document so you can read it yourself. Orbit Sentinel is live and free during beta, so you can explore the filings yourself or <a rel="sponsored" href="${betaUrl('about_try')}">try the free beta</a>.</p>
+<p>Every tidbit is built from <strong>primary filings in the public regulatory record</strong>: the FCC (ECFS and IBFS), the ITU, the FAA, and the dockets where the future of orbit is actually argued. We surface them through <a href="${sentinelUrl('about', 'methodology')}">Orbit Sentinel</a>, our space-regulatory data platform, which crawls and links these sources, and every tidbit links back to the original document so you can read it yourself. Orbit Sentinel is live and free during beta, so you can explore the filings yourself or <a rel="sponsored" href="${betaUrl('about', 'try')}">try the free beta</a>.</p>
 
 <h2>How we keep it accurate</h2>
 <p>Accuracy is the entire value of the site, so the process is built to make a wrong claim hard to publish:</p>
@@ -823,13 +866,14 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p>A docket number is easy to ignore. The actual sentence a company, a lawyer, or a rural carrier wrote into the record is not. Pulling the real line out of the paperwork is how we make a filing readable, and worth sharing, without putting words in anyone's mouth.</p>
 
 <h2>Who writes Space Quotes</h2>
-<p>Space Quotes is written by <strong>Anthony Caracappa</strong>, who tracks the FCC, ITU and FAA filings that shape life in orbit using tools from <a href="${sentinelUrl('about_byline')}">viventine.com</a>. You can find him on <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> and <a rel="me" href="https://github.com/acaracappa">GitHub</a>.</p>
+<p>Space Quotes is written by <strong>Anthony Caracappa</strong>, who tracks the FCC, ITU and FAA filings that shape life in orbit using tools from <a href="${vivUrl('about', 'byline')}">viventine.com</a>. You can find him on <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> and <a rel="me" href="https://github.com/acaracappa">GitHub</a>.</p>
 
 <h2>Corrections</h2>
 <p>Found an error? Accuracy is the whole point of this site, and we'll correct or remove anything that turns out to be wrong.</p>
 
-<footer><a href="/tidbits/">Browse the tidbits →</a> · spacequotes.org</footer>
+<footer><a href="/tidbits/">Browse the tidbits →</a> · ${COOKIE_LINK} · spacequotes.org</footer>
 </div>
+${COOKIE_BANNER}
 </body>
 </html>
 `;
@@ -879,6 +923,7 @@ strong{color:#fff}
 .principle{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+${ANALYTICS_HEAD}
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -900,13 +945,14 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p>Quotes are pulled from primary filings and attributed to their authors. They are believed accurate but are <strong>provided without guarantee</strong>; where a line matters to you, read it in the original document.</p>
 
 <h2>Privacy</h2>
-<p>Space Quotes <strong>collects no personal data and sets no cookies</strong>. There are no forms, no analytics and no tracking.</p>
+<p>Space Quotes has no forms and collects no personal data directly. With your consent, it uses <strong>Google Analytics</strong> (via Google Tag Manager) to understand how the site is used; those cookies are set only if you click Accept on the cookie banner. You can change your choice at any time with the Cookie settings link at the bottom of each page.</p>
 
 <h2>Contact</h2>
-<p>Space Quotes is written by <strong>Anthony Caracappa</strong> using tools from <a href="${sentinelUrl('terms_byline')}">viventine.com</a>. Questions or corrections? Reach out via <a href="${VIVENTINE}">viventine.com</a> or see the <a href="/about/">about page</a>.</p>
+<p>Space Quotes is written by <strong>Anthony Caracappa</strong> using tools from <a href="${vivUrl('terms', 'byline')}">viventine.com</a>. Questions or corrections? Reach out via <a href="${vivUrl('terms', 'contact')}">viventine.com</a> or see the <a href="/about/">about page</a>.</p>
 
-<footer><a href="/tidbits/">Browse the tidbits →</a> · spacequotes.org</footer>
+<footer><a href="/tidbits/">Browse the tidbits →</a> · ${COOKIE_LINK} · spacequotes.org</footer>
 </div>
+${COOKIE_BANNER}
 </body>
 </html>
 `;

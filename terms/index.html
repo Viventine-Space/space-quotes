@@ -50,6 +50,14 @@ strong{color:#fff}
 .principle{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied"});
+try{if(localStorage.getItem("analytics-consent")==="granted")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}
+</script>
+<script>
+(window.requestIdleCallback||setTimeout)(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","GTM-PK28J8XD")})
+</script>
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -71,12 +79,28 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p>Quotes are pulled from primary filings and attributed to their authors. They are believed accurate but are <strong>provided without guarantee</strong>; where a line matters to you, read it in the original document.</p>
 
 <h2>Privacy</h2>
-<p>Space Quotes <strong>collects no personal data and sets no cookies</strong>. There are no forms, no analytics and no tracking.</p>
+<p>Space Quotes has no forms and collects no personal data directly. With your consent, it uses <strong>Google Analytics</strong> (via Google Tag Manager) to understand how the site is used; those cookies are set only if you click Accept on the cookie banner. You can change your choice at any time with the Cookie settings link at the bottom of each page.</p>
 
 <h2>Contact</h2>
-<p>Space Quotes is written by <strong>Anthony Caracappa</strong> using tools from <a href="https://viventine.com?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=terms_byline">viventine.com</a>. Questions or corrections? Reach out via <a href="https://viventine.com">viventine.com</a> or see the <a href="/about/">about page</a>.</p>
+<p>Space Quotes is written by <strong>Anthony Caracappa</strong> using tools from <a href="https://www.viventine.com/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=terms-byline">viventine.com</a>. Questions or corrections? Reach out via <a href="https://www.viventine.com/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=terms-contact">viventine.com</a> or see the <a href="/about/">about page</a>.</p>
 
-<footer><a href="/tidbits/">Browse the tidbits →</a> · spacequotes.org</footer>
+<footer><a href="/tidbits/">Browse the tidbits →</a> · <button type="button" id="cookie-settings" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">Cookie settings</button> · spacequotes.org</footer>
 </div>
+<div id="cookie-banner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:#10121c;border-top:1px solid rgba(120,150,255,.18);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5">
+<div style="max-width:980px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<p style="margin:0;color:#aebbe6">We'd like to set Google Analytics cookies to understand how this site is used. Nothing is set unless you accept.</p>
+<div style="display:flex;gap:8px"><button type="button" id="cookie-decline" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(120,150,255,.3);background:none;color:#eef1fa;font:inherit;cursor:pointer">Decline</button><button type="button" id="cookie-accept" style="padding:6px 14px;border-radius:6px;border:0;background:#6f9bff;color:#0a0a0f;font:inherit;font-weight:600;cursor:pointer">Accept</button></div>
+</div></div>
+<script>
+(function(){
+  var b=document.getElementById("cookie-banner");
+  function set(v){try{localStorage.setItem("analytics-consent",v)}catch(e){}gtag("consent","update",{analytics_storage:v});b.style.display="none"}
+  var c=null;try{c=localStorage.getItem("analytics-consent")}catch(e){}
+  if(!c)b.style.display="block";
+  document.getElementById("cookie-accept").addEventListener("click",function(){set("granted")});
+  document.getElementById("cookie-decline").addEventListener("click",function(){set("denied")});
+  var s=document.getElementById("cookie-settings");if(s)s.addEventListener("click",function(){b.style.display="block"});
+})();
+</script>
 </body>
 </html>

@@ -51,6 +51,14 @@ strong{color:#fff}
 .principle{font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif}
 footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied"});
+try{if(localStorage.getItem("analytics-consent")==="granted")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}
+</script>
+<script>
+(window.requestIdleCallback||setTimeout)(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","GTM-PK28J8XD")})
+</script>
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -60,7 +68,7 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p class="lede">Space Quotes turns the dense public record of space regulation into short, sourced, shareable dispatches, each built around a real line pulled from the filing itself.</p>
 
 <h2>Where the facts come from</h2>
-<p>Every tidbit is built from <strong>primary filings in the public regulatory record</strong>: the FCC (ECFS and IBFS), the ITU, the FAA, and the dockets where the future of orbit is actually argued. We surface them through <a href="https://viventine.com?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=about_methodology">Orbit Sentinel</a>, our space-regulatory data platform, which crawls and links these sources, and every tidbit links back to the original document so you can read it yourself. Orbit Sentinel is live and free during beta, so you can explore the filings yourself or <a rel="sponsored" href="https://console.viventine.com?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=about_try">try the free beta</a>.</p>
+<p>Every tidbit is built from <strong>primary filings in the public regulatory record</strong>: the FCC (ECFS and IBFS), the ITU, the FAA, and the dockets where the future of orbit is actually argued. We surface them through <a href="https://www.viventine.com/orbit-sentinel/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=about-methodology">Orbit Sentinel</a>, our space-regulatory data platform, which crawls and links these sources, and every tidbit links back to the original document so you can read it yourself. Orbit Sentinel is live and free during beta, so you can explore the filings yourself or <a rel="sponsored" href="https://console.viventine.com/sign-in/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=about-try">try the free beta</a>.</p>
 
 <h2>How we keep it accurate</h2>
 <p>Accuracy is the entire value of the site, so the process is built to make a wrong claim hard to publish:</p>
@@ -75,12 +83,28 @@ footer{margin-top:50px;padding-top:24px;border-top:1px solid #1c2138;font-family
 <p>A docket number is easy to ignore. The actual sentence a company, a lawyer, or a rural carrier wrote into the record is not. Pulling the real line out of the paperwork is how we make a filing readable, and worth sharing, without putting words in anyone's mouth.</p>
 
 <h2>Who writes Space Quotes</h2>
-<p>Space Quotes is written by <strong>Anthony Caracappa</strong>, who tracks the FCC, ITU and FAA filings that shape life in orbit using tools from <a href="https://viventine.com?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=about_byline">viventine.com</a>. You can find him on <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> and <a rel="me" href="https://github.com/acaracappa">GitHub</a>.</p>
+<p>Space Quotes is written by <strong>Anthony Caracappa</strong>, who tracks the FCC, ITU and FAA filings that shape life in orbit using tools from <a href="https://www.viventine.com/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=about-byline">viventine.com</a>. You can find him on <a rel="me" href="https://www.linkedin.com/in/acaracappa/">LinkedIn</a> and <a rel="me" href="https://github.com/acaracappa">GitHub</a>.</p>
 
 <h2>Corrections</h2>
 <p>Found an error? Accuracy is the whole point of this site, and we'll correct or remove anything that turns out to be wrong.</p>
 
-<footer><a href="/tidbits/">Browse the tidbits →</a> · spacequotes.org</footer>
+<footer><a href="/tidbits/">Browse the tidbits →</a> · <button type="button" id="cookie-settings" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">Cookie settings</button> · spacequotes.org</footer>
 </div>
+<div id="cookie-banner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:#10121c;border-top:1px solid rgba(120,150,255,.18);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5">
+<div style="max-width:980px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<p style="margin:0;color:#aebbe6">We'd like to set Google Analytics cookies to understand how this site is used. Nothing is set unless you accept.</p>
+<div style="display:flex;gap:8px"><button type="button" id="cookie-decline" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(120,150,255,.3);background:none;color:#eef1fa;font:inherit;cursor:pointer">Decline</button><button type="button" id="cookie-accept" style="padding:6px 14px;border-radius:6px;border:0;background:#6f9bff;color:#0a0a0f;font:inherit;font-weight:600;cursor:pointer">Accept</button></div>
+</div></div>
+<script>
+(function(){
+  var b=document.getElementById("cookie-banner");
+  function set(v){try{localStorage.setItem("analytics-consent",v)}catch(e){}gtag("consent","update",{analytics_storage:v});b.style.display="none"}
+  var c=null;try{c=localStorage.getItem("analytics-consent")}catch(e){}
+  if(!c)b.style.display="block";
+  document.getElementById("cookie-accept").addEventListener("click",function(){set("granted")});
+  document.getElementById("cookie-decline").addEventListener("click",function(){set("denied")});
+  var s=document.getElementById("cookie-settings");if(s)s.addEventListener("click",function(){b.style.display="block"});
+})();
+</script>
 </body>
 </html>

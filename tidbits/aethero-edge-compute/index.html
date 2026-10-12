@@ -80,6 +80,14 @@ h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(30px,5.2vw,44px);line-he
 .related a:hover .t{color:var(--accent)}
 footer{margin-top:48px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:var(--dim)}
 </style>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied"});
+try{if(localStorage.getItem("analytics-consent")==="granted")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}
+</script>
+<script>
+(window.requestIdleCallback||setTimeout)(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i;f.parentNode.insertBefore(j,f)})(window,document,"script","dataLayer","GTM-PK28J8XD")})
+</script>
 </head>
 <body>
 <div class="stars"></div><div class="glow"></div>
@@ -99,8 +107,24 @@ footer{margin-top:48px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-s
 </article>
 <section class="faq"><h2>Questions &amp; answers</h2><dl><dt>What is Aethero applying to do?</dt><dd>To license a 1.5U CubeSat called Deimos that carries electro-optical sensors and an onboard processor, the NXN Edge Computing Module, to certify and demonstrate high-performance on-orbit edge computing.</dd><dt>What would the Deimos mission demonstrate?</dt><dd>How on-orbit edge computing can facilitate the efficient processing of electro-optical data onboard, producing insights for tasks like mapping and resource exploration.</dd><dt>What kind of FCC filing is this?</dt><dd>A satellite license application, filed March 11, 2024 by Aethero Space Inc.</dd></dl></section>
 <aside class="related"><h2>Related tidbits</h2><ul><li><a href="/tidbits/astranis-gso-links-25-157/"><span class="t">Astranis tells the FCC it could not reproduce SpaceX's numbers on two of its GSO reference links</span><span class="m">FCC ECFS · SB Docket 25-157 · Letter</span></a></li><li><a href="/tidbits/spacex-launch-spectrum-13-115/"><span class="t">SpaceX asks the FCC to replace third-party launch-spectrum coordinating committees with an automated scheduling system</span><span class="m">FCC ECFS · ET Docket 13-115 · Reply comments</span></a></li><li><a href="/tidbits/relativity-launch-spectrum-13-115/"><span class="t">Relativity Space asks the FCC to consider co-primary spectrum status for commercial launch</span><span class="m">FCC ECFS · ET Docket 13-115 · Reply comments</span></a></li></ul></aside>
-<aside style="max-width:680px;margin:46px auto 0;padding:16px 20px;border:1px solid rgba(120,150,255,.18);border-radius:14px;background:rgba(91,140,255,.05);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.65;color:#9fb0e0">Space Quotes is built on <a href="https://viventine.com?utm_source=spacequotes&utm_medium=referral&utm_campaign=orbit_sentinel&utm_content=footer" style="color:#9fbcff;text-decoration:none">Orbit Sentinel</a>, a space-regulatory data platform that tracks filings across the FCC, ITU, FAA and more.</aside>
-<footer>Written by <a rel="author" href="https://spacequotes.org/about/">Anthony Caracappa</a> · a <a href="/tidbits/">Space Quotes tidbit</a>, the quotable lines from real space-regulatory filings. <a href="/about/">How we source &amp; verify</a></footer>
+<aside style="max-width:680px;margin:46px auto 0;padding:16px 20px;border:1px solid rgba(120,150,255,.18);border-radius:14px;background:rgba(91,140,255,.05);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.65;color:#9fb0e0">Space Quotes is built on <a href="https://www.viventine.com/orbit-sentinel/?utm_source=spacequotes&amp;utm_medium=referral&amp;utm_campaign=orbit_sentinel&amp;utm_content=tidbit-built_on" style="color:#9fbcff;text-decoration:none">Orbit Sentinel</a>, a space-regulatory data platform that tracks filings across the FCC, ITU, FAA and more.</aside>
+<footer>Written by <a rel="author" href="https://spacequotes.org/about/">Anthony Caracappa</a> · a <a href="/tidbits/">Space Quotes tidbit</a>, the quotable lines from real space-regulatory filings. <a href="/about/">How we source &amp; verify</a> · <button type="button" id="cookie-settings" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">Cookie settings</button></footer>
 </div>
+<div id="cookie-banner" role="region" aria-label="Cookie consent" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:#10121c;border-top:1px solid rgba(120,150,255,.18);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5">
+<div style="max-width:980px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<p style="margin:0;color:#aebbe6">We'd like to set Google Analytics cookies to understand how this site is used. Nothing is set unless you accept.</p>
+<div style="display:flex;gap:8px"><button type="button" id="cookie-decline" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(120,150,255,.3);background:none;color:#eef1fa;font:inherit;cursor:pointer">Decline</button><button type="button" id="cookie-accept" style="padding:6px 14px;border-radius:6px;border:0;background:#6f9bff;color:#0a0a0f;font:inherit;font-weight:600;cursor:pointer">Accept</button></div>
+</div></div>
+<script>
+(function(){
+  var b=document.getElementById("cookie-banner");
+  function set(v){try{localStorage.setItem("analytics-consent",v)}catch(e){}gtag("consent","update",{analytics_storage:v});b.style.display="none"}
+  var c=null;try{c=localStorage.getItem("analytics-consent")}catch(e){}
+  if(!c)b.style.display="block";
+  document.getElementById("cookie-accept").addEventListener("click",function(){set("granted")});
+  document.getElementById("cookie-decline").addEventListener("click",function(){set("denied")});
+  var s=document.getElementById("cookie-settings");if(s)s.addEventListener("click",function(){b.style.display="block"});
+})();
+</script>
 </body>
 </html>
