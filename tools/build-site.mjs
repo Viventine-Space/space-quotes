@@ -34,6 +34,26 @@ function utm(base, page, placement) {
 const sentinelUrl = (page, placement) => utm(ORBIT_SENTINEL, page, placement);
 const betaUrl = (page, placement) => utm(BETA, page, placement);
 const vivUrl = (page, placement) => utm(VIVENTINE, page, placement);
+const downlinkUrl = (slug, page, placement) => utm(`${VIVENTINE}the-downlink/${slug}/`, page, placement);
+
+// Topic hubs that have a matching long-form explainer on viventine.com's The Downlink.
+const DOWNLINK_DEORBIT = { slug: "the-fcc-five-year-deorbit-rule", title: "The FCC 5-Year Deorbit Rule Explained" };
+const DOWNLINK_FCC = { slug: "fcc-satellite-licensing", title: "FCC Satellite Licensing: From Application to Authorization" };
+const DOWNLINK_ITU = { slug: "itu-frequency-coordination", title: "ITU Frequency Coordination and the Satellite Filing Process" };
+const DOWNLINK_READING = {
+  "orbital-debris": DOWNLINK_DEORBIT,
+  deorbit: DOWNLINK_DEORBIT,
+  fcc: DOWNLINK_FCC,
+  "fcc-space-bureau": DOWNLINK_FCC,
+  "satellite-licensing": DOWNLINK_FCC,
+  spectrum: DOWNLINK_ITU,
+  "spectrum-sharing": DOWNLINK_ITU,
+  ngso: DOWNLINK_ITU,
+  gso: DOWNLINK_ITU,
+  "part-100": { slug: "us-space-regulatory-compliance", title: "U.S. Space Regulatory Compliance: A Complete Guide" },
+  smallsat: { slug: "satellite-licensing-guide", title: "How Satellite Licensing Works: A Complete Guide" },
+  ttc: { slug: "ground-station-licensing-guide", title: "How Ground Station Licensing Works: A Complete Guide" },
+};
 
 // Google Consent Mode v2 + GTM, matching spacebench.net: everything denied until the visitor
 // accepts the banner; GTM loads when the browser is idle and GA4 is configured in the container.
@@ -461,7 +481,7 @@ ${COOKIE_BANNER}
 }
 
 // ---------- shared listing renderer (feed + hubs + hub indexes) ----------
-function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, extraLd = [], indexable = true }) {
+function listingPage({ titleTag, desc, canonical, h1, lede, crumbs, rowsHtml, furtherHtml = "", extraLd = [], indexable = true }) {
   const crumbNav = crumbs.map((c, i) => (i === 0 ? `<a href="${c.url}">${esc(c.name)}</a>` : ` &nbsp;/&nbsp; ${c.url ? `<a href="${c.url}">${esc(c.name)}</a>` : esc(c.name)}`)).join("");
   const breadcrumb = {
     "@context": "https://schema.org", "@type": "BreadcrumbList",
@@ -516,7 +536,7 @@ ${ANALYTICS_HEAD}
 <ul>
 ${rowsHtml}
 </ul>
-${builtOn('listing')}
+${furtherHtml}${builtOn('listing')}
 <p style="max-width:680px;margin:18px auto 0;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;color:#9aa6cf">${COOKIE_LINK}</p>
 </div>
 ${COOKIE_BANNER}
@@ -542,6 +562,10 @@ function feedPage(items) {
 
 function topicHub(slug, label, its, indexable = true) {
   const copy = HUB_COPY.topics[slug] || {};
+  const reading = DOWNLINK_READING[slug];
+  const furtherHtml = reading
+    ? `<p style="max-width:680px;margin:28px auto 0;color:var(--muted)">Further reading on The Downlink: <a href="${downlinkUrl(reading.slug, "hub", "further-reading")}">${esc(reading.title)}</a></p>\n`
+    : "";
   const desc = copy.intro || `Space Quotes tidbits on ${label}, sourced from real FCC, ITU and FAA filings, each built around a real line from the filing.`;
   return listingPage({
     titleTag: copy.title ? `${copy.title} | Space Quotes` : `${label}: FCC filings and space-policy tidbits | Space Quotes`,
@@ -549,6 +573,7 @@ function topicHub(slug, label, its, indexable = true) {
     lede: copy.intro || `Verified, primary-sourced tidbits tagged “${label}.”`,
     crumbs: [{ name: "Space Quotes", url: "/" }, { name: "Topics", url: "/topics/" }, { name: label, url: `/topics/${slug}/` }],
     rowsHtml: its.map(tidbitRow).join("\n"),
+    furtherHtml,
     extraLd: [itemListLd(its)],
   });
 }
