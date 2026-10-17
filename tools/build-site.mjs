@@ -50,7 +50,7 @@ const DOWNLINK_READING = {
   "spectrum-sharing": DOWNLINK_ITU,
   ngso: DOWNLINK_ITU,
   gso: DOWNLINK_ITU,
-  "part-100": { slug: "us-space-regulatory-compliance", title: "U.S. Space Regulatory Compliance: A Complete Guide" },
+  "part-100": DOWNLINK_FCC,
   smallsat: { slug: "satellite-licensing-guide", title: "How Satellite Licensing Works: A Complete Guide" },
   ttc: { slug: "ground-station-licensing-guide", title: "How Ground Station Licensing Works: A Complete Guide" },
 };
@@ -275,9 +275,10 @@ function wrap(text, max) {
 }
 // OG cards ship with every page, so a failed render must not leave the HTML pointing at a
 // missing image — abort the whole build instead.
+// Timestamp chunks would make every rebuild rewrite every card, so leave them out.
 function magick(args, label) {
   try {
-    execFileSync("magick", args);
+    execFileSync("magick", [...args.slice(0, -1), "-define", "png:exclude-chunks=date,time", args.at(-1)]);
   } catch (e) {
     console.error(`OG card render failed for ${label}: ${e.message}`);
     process.exit(1);
@@ -985,7 +986,9 @@ ${COOKIE_BANNER}
 
 // ---------- feeds ----------
 function feedXml(items) {
-  const now = new Date().toUTCString();
+  // Newest tidbit date, not build time, so unchanged content rebuilds byte-identical.
+  const latest = items.map((it) => it.fm.date).sort().at(-1);
+  const now = new Date(`${latest}T09:00:00Z`).toUTCString();
   const entries = items
     .map((it) => {
       const url = `${SITE}/tidbits/${it.fm.slug}/`;
